@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="card border-0 shadow-lg rounded-4">
+
+<div class="card-body p-5">
+
+<div class="text-center mb-5">
+
+<h1 class="fw-bold">
+
+📅 Schedule Interview
+
+</h1>
+
+<p class="text-muted">
+
+Schedule or update the interview details for the selected application.
+
+</p>
+
+</div>
+
+<div class="alert alert-light border rounded-4 mb-5">
+
+<h5 class="fw-bold mb-3">
+
+Application Details
+
+</h5>
+
+<p class="mb-2">
+
+<strong>Student:</strong>
+
+{{ application.student.full_name }}
+
+</p>
+
+<p class="mb-2">
+
+<strong>Company:</strong>
+
+{{ application.placement.company }}
+
+</p>
+
+<p class="mb-0">
+
+<strong>Role:</strong>
+
+{{ application.placement.role }}
+
+</p>
+
+</div>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Interview Date
+
+</label>
+
+{{ form.interview_date }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Interview Time
+
+</label>
+
+{{ form.interview_time }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Interview Mode
+
+</label>
+
+{{ form.interview_mode }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Interview Status
+
+</label>
+
+{{ form.status }}
+
+</div>
+
+<div class="col-12 mb-4">
+
+<label class="form-label fw-bold">
+
+Meeting Link
+
+</label>
+
+{{ form.meeting_link }}
+
+<small class="text-muted">
+
+Leave empty for offline interviews.
+
+</small>
+
+</div>
+
+<div class="col-12 mb-4">
+
+<label class="form-label fw-bold">
+
+Venue
+
+</label>
+
+{{ form.venue }}
+
+<small class="text-muted">
+
+Leave empty for online interviews.
+
+</small>
+
+</div>
+
+<div class="col-12 mb-4">
+
+<label class="form-label fw-bold">
+
+Interview Notes
+
+</label>
+
+{{ form.notes }}
+
+</div>
+
+</div>
+
+<div class="d-flex justify-content-between mt-4">
+
+<a
+href="{% url 'application_list' %}"
+class="btn btn-outline-secondary rounded-pill px-4">
+
+← Back
+
+</a>
+
+<button
+type="submit"
+class="btn btn-success rounded-pill px-5">
+
+💾 Save Interview
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

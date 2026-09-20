@@ -1,0 +1,484 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h1 class="fw-bold">
+            🤖 Career Preparation Assistant
+        </h1>
+
+        <a href="{% url 'student_dashboard' %}"
+           class="btn btn-outline-primary">
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4 mb-4">
+
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-2">
+                🚀 Prepare for Your Dream Career
+            </h4>
+
+            <p class="text-muted mb-4">
+                Search from multiple IT career paths and instantly receive
+                interview preparation guidance, skills, projects,
+                certifications and a complete learning roadmap.
+            </p>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <label class="form-label fw-semibold">
+                    Enter Job Role
+                </label>
+
+               <input
+    id="roleInput"
+    type="text"
+    name="role"
+    class="form-control form-control-lg rounded-pill shadow-sm mb-3"
+    placeholder="Search Career..."
+    list="careerList"
+    autocomplete="off"
+    required>
+<datalist id="careerList">
+
+    {% for role in roles %}
+
+        <option value="{{ role|title }}">
+
+    {% endfor %}
+
+</datalist>
+                <button class="btn btn-primary btn-lg w-100 rounded-pill shadow">
+
+                    🚀 Generate Preparation Plan
+
+                </button>
+
+            </form>
+
+            <hr class="my-4">
+
+            <h5 class="fw-bold mb-3">
+
+                🔥 Popular Career Paths
+
+            </h5>
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <button type="button" class="btn btn-outline-primary role-btn">
+                    Software Developer
+                </button>
+
+                <button type="button" class="btn btn-outline-success role-btn">
+                    Backend Developer
+                </button>
+
+                <button type="button" class="btn btn-outline-warning role-btn">
+                    Frontend Developer
+                </button>
+
+                <button type="button" class="btn btn-outline-danger role-btn">
+                    Full Stack Developer
+                </button>
+
+                <button type="button" class="btn btn-outline-info role-btn">
+                    Data Analyst
+                </button>
+
+                <button type="button" class="btn btn-outline-dark role-btn">
+                    Data Scientist
+                </button>
+
+                <button type="button" class="btn btn-outline-secondary role-btn">
+                    Cloud Engineer
+                </button>
+
+                <button type="button" class="btn btn-outline-success role-btn">
+                    DevOps Engineer
+                </button>
+
+                <button type="button" class="btn btn-outline-danger role-btn">
+                    Cyber Security
+                </button>
+
+                <button type="button" class="btn btn-outline-primary role-btn">
+                    QA Engineer
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% if guide %}
+
+<div class="mt-5">
+
+    <div class="card border-0 shadow-lg rounded-4 mb-5">
+
+        <div class="card-body">
+
+            <h2 class="fw-bold">
+
+                {{ guide.title }}
+
+            </h2>
+
+            <p class="text-muted">
+
+                {{ guide.overview }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <!-- Salary -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">💰 Average Salary</h4>
+
+                    <p>{{ guide.salary }}</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Skills -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">🛠 Required Skills</h4>
+
+                    <ul class="list-group list-group-flush">
+
+                        {% for skill in guide.skills %}
+
+                        <li class="list-group-item">{{ skill }}</li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Subjects -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">📚 Subjects</h4>
+
+                    <ul class="list-group list-group-flush">
+
+                        {% for subject in guide.subjects %}
+
+                        <li class="list-group-item">{{ subject }}</li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Tools -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">💻 Tools</h4>
+
+                    <ul class="list-group list-group-flush">
+
+                        {% for tool in guide.tools %}
+
+                        <li class="list-group-item">{{ tool }}</li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Projects -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">🚀 Projects</h4>
+
+                    <ul class="list-group list-group-flush">
+
+                        {% for project in guide.projects %}
+
+                        <li class="list-group-item">{{ project }}</li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Certifications -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">📜 Certifications</h4>
+
+                    <ul class="list-group list-group-flush">
+
+                        {% for cert in guide.certifications %}
+
+                        <li class="list-group-item">{{ cert }}</li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Tips -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">🎤 Interview Tips</h4>
+
+                    <ul class="list-group list-group-flush">
+
+                        {% for tip in guide.tips %}
+
+                        <li class="list-group-item">{{ tip }}</li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Questions -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">❓ Interview Questions</h4>
+
+                    <ul class="list-group list-group-flush">
+
+                        {% for question in guide.questions %}
+
+                        <li class="list-group-item">{{ question }}</li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Roadmap -->
+
+    <div class="card shadow-lg border-0 rounded-4 mb-4">
+
+        <div class="card-body">
+
+            <h3 class="fw-bold mb-4">
+
+                📅 4 Week Preparation Roadmap
+
+            </h3>
+
+            <div class="row">
+
+                {% for week, tasks in guide.roadmap.items %}
+
+                <div class="col-md-3 mb-3">
+
+                    <div class="card border-0 shadow-lg rounded-4 h-100 guide-card">
+
+                        <div class="card-body">
+
+                            <h5 class="text-primary">
+
+                                {{ week }}
+
+                            </h5>
+
+                            <ul class="list-group list-group-flush">
+
+                                {% for task in tasks %}
+
+                                <li class="list-group-item">{{ task }}</li>
+
+                                {% endfor %}
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Resources -->
+
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-body">
+
+            <h3 class="fw-bold">
+
+                📺 Learning Resources
+
+            </h3>
+
+            <ul class="list-group list-group-flush">
+
+                {% for resource in guide.resources %}
+
+                <li class="list-group-item">{{ resource }}</li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+<style>
+
+.guide-card{
+
+    transition:.3s;
+
+}
+
+.guide-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.18)!important;
+
+}
+
+.role-btn{
+
+    border-radius:30px;
+
+    transition:.3s;
+
+}
+
+.role-btn:hover{
+
+    transform:scale(1.05);
+
+}
+
+</style>
+
+{% endif %}
+
+</div>
+<script>
+
+const buttons = document.querySelectorAll(".role-btn");
+
+const input = document.getElementById("roleInput");
+
+buttons.forEach(button => {
+
+    button.addEventListener("click", function(){
+
+        input.value = this.innerText;
+
+    });
+
+});
+</script>
+{% endblock %}

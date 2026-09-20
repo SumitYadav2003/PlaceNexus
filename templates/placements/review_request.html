@@ -1,0 +1,488 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="row">
+
+<div class="col-lg-8">
+
+<div class="card shadow border-0 rounded-4 mb-4">
+
+<div class="card-body p-5">
+
+<h2 class="fw-bold mb-4">
+
+Review Placement Request
+
+</h2>
+
+<table class="table">
+
+<tr>
+<th width="220">Company</th>
+<td>{{ request_obj.company }}</td>
+</tr>
+
+<tr>
+<th>Role</th>
+<td>{{ request_obj.role }}</td>
+</tr>
+
+<tr>
+<th>Department</th>
+<td>{{ request_obj.department }}</td>
+</tr>
+
+<tr>
+<th>Package</th>
+<td>£{{ request_obj.package }}k / Per Annum</td>
+</tr>
+
+<tr>
+<th>Location</th>
+<td>{{ request_obj.location }}</td>
+</tr>
+
+<tr>
+<th>Deadline</th>
+<td>{{ request_obj.deadline }}</td>
+</tr>
+
+<tr>
+
+<th>Status</th>
+
+<td>
+
+{% if request_obj.status == "pending" %}
+
+<span class="badge bg-secondary">Pending</span>
+
+{% elif request_obj.status == "needs_changes" %}
+
+<span class="badge bg-warning text-dark">
+
+Needs Changes
+
+</span>
+
+{% elif request_obj.status == "published" %}
+
+<span class="badge bg-success">
+
+Published
+
+</span>
+
+{% elif request_obj.status == "rejected" %}
+
+<span class="badge bg-danger">
+
+Rejected
+
+</span>
+
+{% endif %}
+
+{% if revisions %}
+
+<span class="badge bg-info text-dark ms-2">
+
+Revision {{ revisions.0.revision_number }}
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="card shadow border-0 rounded-4">
+
+<div class="card-body">
+
+<h4 class="fw-bold mb-4">
+
+Activity History
+
+</h4>
+
+{% for activity in activity_history %}
+
+<div class="d-flex mb-4">
+
+<div class="me-3">
+
+{% if activity.type == "submitted" %}
+
+<span class="badge rounded-pill bg-primary p-3">
+
+<i class="fas fa-paper-plane"></i>
+
+</span>
+
+{% elif activity.type == "review" %}
+
+{% if activity.review.status == "approved" %}
+
+<span class="badge rounded-pill bg-success p-3">
+
+<i class="fas fa-check"></i>
+
+</span>
+
+{% elif activity.review.status == "needs_changes" %}
+
+<span class="badge rounded-pill bg-warning text-dark p-3">
+
+<i class="fas fa-edit"></i>
+
+</span>
+
+{% elif activity.review.status == "rejected" %}
+
+<span class="badge rounded-pill bg-danger p-3">
+
+<i class="fas fa-times"></i>
+
+</span>
+
+{% else %}
+
+<span class="badge rounded-pill bg-secondary p-3">
+
+<i class="fas fa-user-check"></i>
+
+</span>
+
+{% endif %}
+
+{% elif activity.type == "revision" %}
+
+<span class="badge rounded-pill bg-info text-dark p-3">
+
+<i class="fas fa-history"></i>
+
+</span>
+
+{% endif %}
+
+</div>
+
+<div class="flex-grow-1">
+
+<h6 class="fw-bold mb-1">
+
+{{ activity.title }}
+
+</h6>
+
+{% if activity.description %}
+
+<div class="alert alert-light border py-2 px-3 mb-2">
+
+{{ activity.description }}
+
+</div>
+
+{% endif %}
+
+<p class="text-muted small mb-0">
+
+{{ activity.time|date:"d M Y • h:i A" }}
+
+</p>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="text-center py-5">
+
+<i class="fas fa-clock fa-3x text-muted mb-3"></i>
+
+<h5>
+
+No Activity Found
+
+</h5>
+
+<p class="text-muted mb-0">
+
+This request has not been reviewed yet.
+
+</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<div class="card shadow border-0 rounded-4 mt-4">
+
+<div class="card-body">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label class="fw-bold mb-2">
+
+Coordinator Comments
+
+</label>
+
+<textarea
+
+name="comments"
+
+class="form-control"
+
+rows="5"
+
+>{{ request_obj.coordinator_comments }}</textarea>
+
+<div class="mt-4 d-flex gap-2">
+
+<button
+
+type="submit"
+
+name="action"
+
+value="needs_changes"
+
+class="btn btn-warning rounded-pill">
+
+Request Changes
+
+</button>
+
+<button
+
+type="submit"
+
+name="action"
+
+value="approve"
+
+class="btn btn-success rounded-pill">
+
+Approve
+
+</button>
+
+<button
+
+type="submit"
+
+name="action"
+
+value="reject"
+
+class="btn btn-danger rounded-pill">
+
+Reject
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-4">
+
+<div class="sticky-top" style="top:95px;">
+
+<div class="card shadow border-0 rounded-4 mb-4">
+
+<div class="card-body">
+
+<table class="table align-middle">
+
+<tr>
+
+<th>Status</th>
+
+<td>
+
+<strong>
+
+{{ request_obj.get_status_display }}
+
+</strong>
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Current Revision</th>
+
+<td>
+
+{% if revisions %}
+
+Revision {{ revisions.0.revision_number }}
+
+{% else %}
+
+Original
+
+{% endif %}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Total Reviews</th>
+
+<td>
+
+{{ reviews|length }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Total Revisions</th>
+
+<td>
+
+{{ revisions|length }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Submitted</th>
+
+<td>
+
+{{ request_obj.created_at|date:"d M Y" }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>Updated</th>
+
+<td>
+
+{{ request_obj.updated_at|date:"d M Y" }}
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+</div>
+
+</div>
+
+<div class="card shadow border-0 rounded-4">
+
+<div class="card-body">
+
+<h5 class="fw-bold mb-3">
+
+Workflow Progress
+
+</h5>
+
+<div class="progress mb-3">
+
+{% if request_obj.status == "published" %}
+
+<div class="progress-bar bg-success"
+
+style="width:100%">
+
+Published
+
+</div>
+
+{% elif request_obj.status == "needs_changes" %}
+
+<div class="progress-bar bg-warning"
+
+style="width:65%">
+
+Needs Changes
+
+</div>
+
+{% elif request_obj.status == "rejected" %}
+
+<div class="progress-bar bg-danger"
+
+style="width:100%">
+
+Rejected
+
+</div>
+
+{% else %}
+
+<div class="progress-bar"
+
+style="width:35%">
+
+Pending
+
+</div>
+
+{% endif %}
+
+</div>
+
+<p class="small text-muted mb-0">
+
+All reviews and revisions are permanently stored for audit purposes.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

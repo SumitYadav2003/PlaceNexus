@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-lg rounded-4">
+
+                <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+
+                        <h1 class="fw-bold">
+                            Create Account
+                        </h1>
+
+                        <p class="text-muted">
+                            Join PlaceNexus and start your placement journey.
+                        </p>
+
+                    </div>
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div class="alert alert-success">
+
+                                {{ message }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                    {% if form.errors %}
+
+                        <div class="alert alert-danger">
+
+                            <strong>Please fix the following errors:</strong>
+
+                            <ul class="mb-0 mt-2">
+
+                                {% for field in form %}
+
+                                    {% for error in field.errors %}
+
+                                        <li>{{ error }}</li>
+
+                                    {% endfor %}
+
+                                {% endfor %}
+
+                                {% for error in form.non_field_errors %}
+
+                                    <li>{{ error }}</li>
+
+                                {% endfor %}
+
+                            </ul>
+
+                        </div>
+
+                    {% endif %}
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Username
+
+                            </label>
+
+                            {{ form.username }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Email
+
+                            </label>
+
+                            {{ form.email }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Password
+
+                            </label>
+
+                            <div class="input-group">
+
+                                {{ form.password1 }}
+
+                                <button
+                                    class="btn btn-outline-secondary"
+                                    type="button"
+                                    onclick="togglePassword('password1')">
+
+                                    👁
+
+                                </button>
+
+                            </div>
+
+                            <div class="form-text mt-2">
+
+                                <strong>Password Requirements</strong>
+
+                                <ul class="mb-0">
+
+                                    <li>Minimum 8 characters</li>
+
+                                    <li>Cannot be entirely numeric</li>
+
+                                    <li>Cannot be too common</li>
+
+                                    <li>Cannot be similar to your username</li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Confirm Password
+
+                            </label>
+
+                            <div class="input-group">
+
+                                {{ form.password2 }}
+
+                                <button
+                                    class="btn btn-outline-secondary"
+                                    type="button"
+                                    onclick="togglePassword('password2')">
+
+                                    👁
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+
+                                Role
+
+                            </label>
+
+                            {{ form.role }}
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-lg w-100">
+
+                            Create Account
+
+                        </button>
+
+                    </form>
+
+                    <hr class="my-4">
+
+                    <p class="text-center mb-0">
+
+                        Already have an account?
+
+                        <a href="{% url 'login' %}">
+
+                            Login
+
+                        </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function togglePassword(id){
+
+    const field = document.getElementById(id);
+
+    if(field.type === "password"){
+
+        field.type = "text";
+
+    }
+
+    else{
+
+        field.type = "password";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

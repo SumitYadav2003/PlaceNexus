@@ -1,0 +1,457 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="card border-0 shadow-lg rounded-4">
+
+<div class="card-body p-5">
+
+<!-- Ticket Header -->
+
+<div class="d-flex justify-content-between align-items-start flex-wrap mb-4">
+
+<div>
+
+<h2 class="fw-bold mb-2">
+
+🎫 {{ ticket.subject }}
+
+</h2>
+
+<p class="text-muted mb-3">
+
+{{ ticket.get_category_display }}
+
+</p>
+
+<div class="d-flex gap-2 flex-wrap">
+
+<span class="badge bg-danger rounded-pill px-3 py-2">
+
+🔥 {{ ticket.get_priority_display }}
+
+</span>
+
+{% if ticket.status == "open" %}
+
+<span class="badge bg-primary rounded-pill px-3 py-2">
+
+🟢 Open
+
+</span>
+
+{% elif ticket.status == "in_progress" %}
+
+<span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+
+🟡 In Progress
+
+</span>
+
+{% elif ticket.status == "resolved" %}
+
+<span class="badge bg-success rounded-pill px-3 py-2">
+
+✅ Resolved
+
+</span>
+
+{% else %}
+
+<span class="badge bg-secondary rounded-pill px-3 py-2">
+
+🔒 Closed
+
+</span>
+
+{% endif %}
+
+<span class="badge bg-light text-dark rounded-pill px-3 py-2">
+
+{{ ticket.created_at|date:"d M Y • H:i" }}
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h3 class="fw-bold mb-1">
+
+            💬 Conversation
+
+        </h3>
+
+        <p class="text-muted mb-0">
+
+            View the complete discussion between the student and placement coordinator.
+
+        </p>
+
+    </div>
+
+</div>
+<!-- Original Ticket -->
+
+<div class="d-flex mb-4">
+
+<div class="bg-white border rounded-4 shadow-sm p-4 w-75">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+<div>
+
+👤
+
+<strong>
+
+{{ ticket.student.full_name }}
+
+</strong>
+
+<div class="small text-primary">
+
+Original Ticket
+
+</div>
+
+</div>
+
+<small class="text-muted">
+
+{{ ticket.created_at|date:"d M Y H:i" }}
+
+</small>
+
+</div>
+
+<p class="mb-0">
+
+{{ ticket.message }}
+
+</p>
+
+</div>
+
+</div>
+
+{% for reply in replies %}
+
+{% if reply.sender.role == "coordinator" %}
+
+<div class="d-flex justify-content-end mb-4">
+
+<div class="bg-primary text-white rounded-4 shadow p-4 w-75">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+<div>
+
+👨‍💼
+
+<strong>
+
+{{ reply.sender.full_name }}
+
+</strong>
+
+<div class="small text-white-50">
+
+Placement Coordinator
+
+</div>
+
+</div>
+
+<small class="text-white-50">
+
+{{ reply.created_at|date:"d M Y H:i" }}
+
+</small>
+
+</div>
+
+<p class="mb-0">
+
+{{ reply.message }}
+
+</p>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="d-flex mb-4">
+
+<div class="bg-white border rounded-4 shadow-sm p-4 w-75">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+<div>
+
+👤
+
+<strong>
+
+{{ reply.sender.full_name }}
+
+</strong>
+
+<div class="small text-success">
+
+Student Reply
+
+</div>
+
+</div>
+
+<small class="text-muted">
+
+{{ reply.created_at|date:"d M Y H:i" }}
+
+</small>
+
+</div>
+
+<p class="mb-0">
+
+{{ reply.message }}
+
+</p>
+
+</div>
+
+</div>
+
+{% endif %}
+
+{% empty %}
+
+<div class="alert alert-light rounded-4 border">
+
+No replies yet.
+
+Be the first to reply.
+
+</div>
+
+{% endfor %}
+
+<hr class="my-5">
+
+{% if request.user.profile.role == "coordinator" %}
+
+<div class="card border-0 bg-light rounded-4 shadow-sm mb-5">
+
+<div class="card-body">
+
+<h5 class="fw-bold mb-4">
+
+⚙ Ticket Status
+
+</h5>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="row align-items-end">
+
+<div class="col-md-8">
+
+<label class="form-label fw-semibold">
+
+Change Status
+
+</label>
+
+<select
+name="status"
+class="form-select">
+
+<option value="open"
+{% if ticket.status == "open" %}selected{% endif %}>
+
+🟢 Open
+
+</option>
+
+<option value="in_progress"
+{% if ticket.status == "in_progress" %}selected{% endif %}>
+
+🟡 In Progress
+
+</option>
+
+<option value="resolved"
+{% if ticket.status == "resolved" %}selected{% endif %}>
+
+✅ Resolved
+
+</option>
+
+<option value="closed"
+{% if ticket.status == "closed" %}selected{% endif %}>
+
+🔒 Closed
+
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+
+<button
+type="submit"
+class="btn btn-success w-100 rounded-pill">
+
+<i class="fas fa-check me-2"></i>
+
+Update Status
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+{% endif %}
+
+<div class="card border-0 shadow-sm rounded-4">
+
+<div class="card-body">
+
+<h4 class="fw-bold mb-4">
+
+    💬 Reply
+
+</h4>
+
+<div class="alert alert-info rounded-4 border-0 mb-4">
+
+    <i class="fas fa-circle-info me-2"></i>
+
+    Keep replies professional and provide clear guidance to help resolve the student's issue quickly.
+
+</div>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="mb-4">
+
+{{ form.message }}
+
+</div>
+
+<div class="d-flex justify-content-between">
+
+{% if request.user.profile.role == "student" %}
+
+<a
+href="{% url 'my_tickets' %}"
+class="btn btn-outline-secondary rounded-pill px-4">
+
+← Back
+
+</a>
+
+{% else %}
+
+<a
+href="{% url 'support_ticket_list' %}"
+class="btn btn-outline-secondary rounded-pill px-4">
+
+← Back
+
+</a>
+
+{% endif %}
+
+<button
+type="submit"
+class="btn btn-primary rounded-pill px-4">
+
+<i class="fas fa-paper-plane me-2"></i>
+
+Send Reply
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<style>
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+textarea{
+
+    min-height:150px;
+
+}
+
+.badge{
+
+    font-size:.82rem;
+
+    padding:.55rem .9rem;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,625 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ================= Header ================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+
+                <i class="fas fa-file-alt text-primary me-2"></i>
+
+                Community Post
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                View the complete discussion.
+
+            </p>
+
+        </div>
+
+        <div class="d-flex gap-2">
+
+            {% if profile == post.author %}
+
+            <a href="{% url 'edit_post' post.id %}"
+               class="btn btn-outline-primary rounded-pill">
+
+                <i class="fas fa-edit me-2"></i>
+
+                Edit
+
+            </a>
+
+            <a href="{% url 'delete_post' post.id %}"
+               class="btn btn-outline-danger rounded-pill">
+
+                <i class="fas fa-trash me-2"></i>
+
+                Delete
+
+            </a>
+
+            {% endif %}
+
+btn-secondary rounded-p
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <!-- ================= Main Content ================= -->
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow rounded-4 overflow-hidden mb-4">
+
+    {% if post.image %}
+
+        <img src="{{ post.image.url }}"
+             class="img-fluid"
+             style="max-height:500px;object-fit:cover;">
+
+    {% else %}
+
+        <div class="text-center py-5 bg-light">
+
+            <i class="fas fa-users display-1 text-primary mb-3"></i>
+
+            <h5 class="fw-bold text-muted">
+
+                Community Discussion
+
+            </h5>
+
+            <small class="text-muted">
+
+                No image attached to this post
+
+            </small>
+
+        </div>
+
+    {% endif %}
+
+    <div class="card-body p-4">
+
+        <div class="d-flex justify-content-between align-items-start mb-3">
+
+            <div>
+
+                <span class="badge bg-primary rounded-pill mb-2">
+
+                    {{ post.get_post_type_display }}
+
+                </span>
+
+                <h2 class="fw-bold">
+
+                    {{ post.title }}
+
+                </h2>
+
+            </div>
+
+            {% if post.is_pinned %}
+
+            <span class="badge bg-danger">
+
+                📌 Pinned
+
+            </span>
+
+            {% endif %}
+
+        </div>
+
+        <div class="d-flex align-items-center mb-4">
+
+            {% if post.author.profile_photo %}
+
+            <img src="{{ post.author.profile_photo.url }}"
+                 class="dashboard-avatar me-3">
+
+            {% else %}
+
+            <div class="dashboard-avatar-placeholder me-3">
+
+                {{ post.author.user.username|first|upper }}
+
+            </div>
+
+            {% endif %}
+
+            <div>
+
+                <div class="fw-bold">
+
+                    {{ post.author.full_name|default:post.author.user.username }}
+
+                </div>
+
+                <small class="text-muted">
+
+                    {{ post.get_role_display }}
+
+                    •
+
+                    {{ post.created_at|timesince }} ago
+
+                </small>
+
+            </div>
+
+        </div>
+
+        <div class="fs-5">
+
+            {{ post.content|linebreaks }}
+
+        </div>
+
+       <hr>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+
+        <span
+            id="like-count-{{ post.id }}"
+            class="badge bg-light text-danger me-2">
+
+            <i class="fas fa-heart me-1"></i>
+
+            {{ post.likes.count }}
+
+        </span>
+
+        <span class="badge bg-light text-primary">
+
+            <i class="fas fa-comment me-1"></i>
+
+            {{ comments.count }}
+
+        </span>
+
+    </div>
+
+    <small class="text-muted">
+
+        {{ post.created_at|date:"d M, Y" }}
+
+    </small>
+
+</div>
+
+<hr>
+
+<div class="row g-2">
+
+    <div class="col-md-3">
+
+        <button
+            class="btn like-btn w-100 {% if post.id in liked_posts %}btn-danger{% else %}btn-outline-danger{% endif %}"
+            data-url="{% url 'like_post' post.id %}">
+
+            <i class="fas fa-heart me-2"></i>
+
+            {% if post.id in liked_posts %}
+
+                Liked
+
+            {% else %}
+
+                Like
+
+            {% endif %}
+
+        </button>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <a
+            href="#comments"
+            class="btn btn-outline-primary w-100">
+
+            <i class="fas fa-comment me-2"></i>
+
+            Comment
+
+        </a>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <button
+            class="btn save-btn w-100 {% if post.id in saved_posts %}btn-warning{% else %}btn-outline-warning{% endif %}"
+            data-url="{% url 'save_post' post.id %}">
+
+            <i class="{% if post.id in saved_posts %}fas{% else %}far{% endif %} fa-bookmark me-2"></i>
+
+            {% if post.id in saved_posts %}
+
+                Saved
+
+            {% else %}
+
+                Save
+
+            {% endif %}
+
+        </button>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <button
+            type="button"
+            onclick="sharePost(window.location.href)"
+            class="btn btn-outline-success w-100">
+
+            <i class="fas fa-share-alt me-2"></i>
+
+            Share
+
+        </button>
+
+    </div>
+
+</div>
+    </div>
+
+</div>
+
+            <!-- ================= Comments ================= -->
+
+            <hr class="my-5">
+
+            <h3 id="comments" class="fw-bold mb-4">
+
+                <i class="fas fa-comments text-primary me-2"></i>
+
+                Comments ({{ comments.count }})
+
+            </h3>
+
+            <div class="card border-0 shadow rounded-4 mb-4">
+
+                <div class="card-body">
+
+                    <form
+                        method="POST"
+                        action="{% url 'add_comment' post.id %}">
+
+                        {% csrf_token %}
+
+                        <textarea
+                            name="comment"
+                            rows="5"
+                            class="form-control rounded-3"
+                            placeholder="Write your comment..."
+                            required></textarea>
+
+                        <div class="text-end mt-3">
+
+                            <button
+                                class="btn btn-primary rounded-pill">
+
+                                <i class="fas fa-paper-plane me-2"></i>
+
+                                Post Comment
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% for comment in comments %}
+
+            <div class="card border-0 shadow-sm rounded-4 mb-3">
+
+                <div class="card-body">
+
+                    <div class="d-flex">
+
+                        {% if comment.user.profile_photo %}
+
+                            <img
+                                src="{{ comment.user.profile_photo.url }}"
+                                class="dashboard-avatar me-3">
+
+                        {% else %}
+
+                            <div class="dashboard-avatar-placeholder me-3">
+
+                                {{ comment.user.user.username|first|upper }}
+
+                            </div>
+
+                        {% endif %}
+
+                        <div class="flex-grow-1">
+
+                            <div class="d-flex justify-content-between">
+
+                                <h6 class="fw-bold">
+
+                                    {% if comment.user.full_name %}
+
+                                        {{ comment.user.full_name }}
+
+                                    {% else %}
+
+                                        {{ comment.user.user.username }}
+
+                                    {% endif %}
+
+                                </h6>
+
+                                <small class="text-muted">
+
+                                    {{ comment.created_at|timesince }} ago
+
+                                </small>
+
+                            </div>
+
+                            <p class="mb-0">
+
+                                {{ comment.comment }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="alert alert-light rounded-4">
+
+                No comments yet.
+
+Start the conversation and help the community by sharing your thoughts.
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- ================= Sidebar ================= -->
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow rounded-4 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-4">
+
+                        Author
+
+                    </h5>
+
+                    <div class="d-flex align-items-center">
+
+                        {% if post.author.profile_photo %}
+
+                            <img
+                                src="{{ post.author.profile_photo.url }}"
+                                class="dashboard-avatar me-3">
+
+                        {% else %}
+
+                            <div class="dashboard-avatar-placeholder me-3">
+
+                                {{ post.author.user.username|first|upper }}
+
+                            </div>
+
+                        {% endif %}
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+
+                                {% if post.author.full_name %}
+
+                                    {{ post.author.full_name }}
+
+                                {% else %}
+
+                                    {{ post.author.user.username }}
+
+                                {% endif %}
+
+                            </h5>
+
+                            <p class="text-muted mb-2">
+
+                                {{ post.get_role_display }}
+
+                            </p>
+
+                            <a
+                                href="{% url 'community_user_profile' post.author.id %}"
+                                class="btn btn-primary rounded-pill">
+
+                                <i class="fas fa-user me-2"></i>
+
+                                View Profile
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+                        <!-- ================= Related Posts ================= -->
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-4">
+
+                        Related Posts
+
+                    </h5>
+
+                    {% for related_post in related_posts %}
+
+                        <div class="mb-3">
+
+                            <a
+                                href="{% url 'community_post_detail' related_post.id %}"
+                                class="text-decoration-none">
+
+                                <div class="card border-0 shadow-sm rounded-3">
+
+                                    <div class="card-body">
+
+                                        <span class="badge bg-primary mb-2">
+
+                                            {{ related_post.get_post_type_display }}
+
+                                        </span>
+
+<h6 class="fw-bold mb-2">
+
+    {{ related_post.title|truncatechars:55 }}
+
+</h6>
+
+<p class="text-muted small mb-2">
+
+    {{ related_post.content|truncatechars:80 }}
+
+</p>
+
+                                        <small class="text-muted">
+
+                                            {{ related_post.created_at|timesince }} ago
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    {% empty %}
+
+                        <div class="alert alert-light rounded-4">
+
+                            No related posts found.
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    
+
+</div>
+
+<style>
+
+.dashboard-avatar{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.dashboard-avatar-placeholder{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    background:#0d6efd;
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    transform:translateY(-3px);
+
+}
+
+textarea{
+
+    resize:none;
+
+}
+
+</style>
+{% include "applications/community/_image_modal.html" %}
+{% include "applications/community/_community_js.html" %}
+{% include "applications/community/_community_css.html" %}
+
+{% endblock %}

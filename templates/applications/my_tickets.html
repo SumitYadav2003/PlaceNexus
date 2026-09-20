@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="d-flex justify-content-between align-items-center mb-5">
+
+<div>
+
+<h1 class="fw-bold">
+
+🎫 My Support Tickets
+
+</h1>
+
+<p class="text-muted">
+
+Track all your support requests.
+
+</p>
+
+</div>
+
+<a
+href="{% url 'create_ticket' %}"
+class="btn btn-primary rounded-pill px-4">
+
+➕ New Ticket
+
+</a>
+
+</div>
+
+{% for ticket in tickets %}
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+
+<div class="card-body p-4">
+
+<div class="d-flex justify-content-between align-items-start">
+
+<div>
+
+<h4 class="fw-bold mb-2">
+
+{{ ticket.subject }}
+
+</h4>
+
+<p class="text-muted mb-3">
+
+👤 {{ ticket.student.full_name }}
+
+</p>
+
+<div class="d-flex flex-wrap gap-2">
+
+<span class="badge rounded-pill bg-light text-dark px-3 py-2">
+
+📂 {{ ticket.get_category_display }}
+
+</span>
+
+{% if ticket.priority == "high" %}
+
+<span class="badge rounded-pill bg-danger px-3 py-2">
+
+🔥 High
+
+</span>
+
+{% elif ticket.priority == "medium" %}
+
+<span class="badge rounded-pill bg-warning text-dark px-3 py-2">
+
+⚡ Medium
+
+</span>
+
+{% else %}
+
+<span class="badge rounded-pill bg-success px-3 py-2">
+
+✅ Low
+
+</span>
+
+{% endif %}
+{% if ticket.status == "open" %}
+
+<span class="fw-semibold text-primary">
+
+🟢 Open
+
+</span>
+
+{% elif ticket.status == "in_progress" %}
+
+<span class="fw-semibold text-warning">
+
+🟡 In Progress
+
+</span>
+
+{% elif ticket.status == "resolved" %}
+
+<span class="fw-semibold text-success">
+
+✅ Resolved
+
+</span>
+
+{% else %}
+
+<span class="fw-semibold text-secondary">
+
+🔒 Closed
+
+</span>
+
+{% endif %}
+</div>
+
+</div>
+
+<div class="text-end">
+
+<small class="text-muted d-block mb-3">
+
+{{ ticket.created_at|date:"d M Y" }}
+
+</small>
+
+<a
+href="{% url 'ticket_detail' ticket.id %}"
+class="btn btn-primary rounded-pill px-4">
+
+View Ticket →
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="alert alert-info rounded-4">
+
+No support tickets found.
+
+</div>
+
+{% endfor %}
+</div>
+
+{% endblock %}

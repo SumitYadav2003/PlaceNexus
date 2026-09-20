@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h2 class="fw-bold mb-2">
+
+                        <i class="fas fa-hourglass-half text-warning me-2"></i>
+
+                        Pending Employer Placements
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Review employer submissions before making them visible to students.
+
+                    </p>
+
+                </div>
+
+                <a href="{% url 'coordinator_dashboard' %}"
+                   class="btn btn-outline-primary rounded-pill mt-3 mt-lg-0">
+
+                    <i class="fas fa-arrow-left me-2"></i>
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Stats -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h2 class="fw-bold text-warning">
+
+                        {{ placements.count }}
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Pending Placements
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Table -->
+
+    <div class="card border-0 shadow rounded-4">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Employer</th>
+
+                            <th>Company</th>
+
+                            <th>Role</th>
+
+                            <th>Package</th>
+
+                            <th>Deadline</th>
+
+                            <th class="text-center">
+
+                                Status
+
+                            </th>
+
+                            <th class="text-center">
+
+                                Action
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for placement in placements %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+
+                                    {{ placement.employer.full_name }}
+
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                🏢 {{ placement.company }}
+
+                            </td>
+
+                            <td>
+
+                                {{ placement.role }}
+
+                            </td>
+
+                            <td>
+
+                                ₹ {{ placement.package }}
+
+                            </td>
+
+                            <td>
+
+                                {{ placement.deadline|date:"d M Y" }}
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <span class="badge bg-warning text-dark rounded-pill">
+
+                                    Pending Review
+
+                                </span>
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <a href="{% url 'approve_employer_placement' placement.id %}"
+                                   class="btn btn-success rounded-pill">
+
+                                    <i class="fas fa-check me-2"></i>
+
+                                    Approve
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="7">
+
+                                <div class="text-center py-5">
+
+                                    <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
+
+                                    <h4 class="fw-bold">
+
+                                        No Pending Placements
+
+                                    </h4>
+
+                                    <p class="text-muted">
+
+                                        All employer placement submissions have been reviewed.
+
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+.card{
+    transition:.25s ease;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+}
+
+.table tbody tr:hover{
+    background:#f8f9fa;
+}
+
+.badge{
+    font-size:.82rem;
+    padding:.55rem .9rem;
+}
+
+.btn{
+    transition:.25s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+</style>
+
+{% endblock %}

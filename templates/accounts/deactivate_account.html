@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-md-6">
+
+<div class="card shadow border-0 rounded-4">
+
+<div class="card-body p-5 text-center">
+
+<i class="fas fa-user-slash fa-4x text-danger mb-4"></i>
+
+<h2 class="fw-bold">
+
+Deactivate Account
+
+</h2>
+
+<p class="text-muted mb-4">
+
+Your account will be temporarily deactivated and hidden from the platform.
+
+You can reactivate it anytime by simply logging in again with your username and password.
+
+</p>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<button
+class="btn btn-danger rounded-pill px-5">
+
+Temporarily Deactivate My Account
+
+</button>
+
+<a
+href="{% url 'profile' %}"
+class="btn btn-secondary rounded-pill px-5 ms-2">
+
+Cancel
+
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

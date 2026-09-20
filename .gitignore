@@ -1,0 +1,41 @@
+# Virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+.env.*
+
+# Django / local database
+*.sqlite3
+
+# User uploads
+media/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+__MACOSX/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Coverage / testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Dissertation/report files
+interim-report.docx
+report.txt
+reports/

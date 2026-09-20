@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-body p-5">
+
+                    <h2 class="fw-bold text-center mb-4">
+
+                        ⭐ Review {{ placement.company }}
+
+                    </h2>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Overall Rating
+                            </label>
+
+                            {{ form.rating }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Online Assessment Difficulty
+                            </label>
+
+                            {{ form.oa_difficulty }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Interview Difficulty
+                            </label>
+
+                            {{ form.interview_difficulty }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Salary Offered (£k / Per Annum)
+                            </label>
+
+                            {{ form.salary }}
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                Overall Experience
+                            </label>
+
+                            {{ form.experience }}
+
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <a href="{% url 'company_page' placement.id %}"
+                               class="btn btn-outline-secondary rounded-pill">
+
+                                ← Back
+
+                            </a>
+
+                            <button
+                                class="btn btn-primary rounded-pill">
+
+                                Submit Review
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

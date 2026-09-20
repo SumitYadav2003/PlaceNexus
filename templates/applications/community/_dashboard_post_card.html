@@ -1,0 +1,424 @@
+<div class="card border-0 shadow rounded-4 dashboard-post-card h-100">
+{% if post.image %}
+
+<div class="community-image-wrapper">
+
+    <img
+        src="{{ post.image.url }}"
+        class="community-card-image">
+
+</div>
+
+{% else %}
+
+<div class="community-placeholder">
+
+    {% if post.post_type == "achievement" %}
+
+        <i class="fas fa-trophy fa-5x text-success mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Achievement
+
+        </h5>
+
+    {% elif post.post_type == "interview_experience" %}
+
+        <i class="fas fa-briefcase fa-5x text-info mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Interview Experience
+
+        </h5>
+
+    {% elif post.post_type == "career_question" %}
+
+        <i class="fas fa-comments fa-5x text-warning mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Career Question
+
+        </h5>
+
+    {% elif post.post_type == "career_tip" %}
+
+        <i class="fas fa-lightbulb fa-5x text-primary mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Career Tip
+
+        </h5>
+
+    {% elif post.post_type == "placement_drive" %}
+
+        <i class="fas fa-rocket fa-5x text-danger mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Placement Drive
+
+        </h5>
+
+    {% elif post.post_type == "announcement" %}
+
+        <i class="fas fa-bullhorn fa-5x text-dark mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Announcement
+
+        </h5>
+
+    {% elif post.post_type == "deadline" %}
+
+        <i class="fas fa-clock fa-5x text-danger mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Deadline
+
+        </h5>
+
+    {% elif post.post_type == "preparation_tip" %}
+
+        <i class="fas fa-book-open fa-5x text-secondary mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Preparation Tip
+
+        </h5>
+
+    {% elif post.post_type == "hiring" %}
+
+        <i class="fas fa-user-tie fa-5x text-success mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Hiring
+
+        </h5>
+
+    {% elif post.post_type == "internship" %}
+
+        <i class="fas fa-graduation-cap fa-5x text-primary mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Internship
+
+        </h5>
+
+    {% elif post.post_type == "company_update" %}
+
+        <i class="fas fa-building fa-5x text-info mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Company Update
+
+        </h5>
+
+    {% elif post.post_type == "recruitment_tip" %}
+
+        <i class="fas fa-chart-line fa-5x text-warning mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Recruitment Tip
+
+        </h5>
+
+    {% else %}
+
+        <i class="fas fa-users fa-5x text-primary mb-3"></i>
+
+        <h5 class="fw-bold">
+
+            Community Discussion
+
+        </h5>
+
+    {% endif %}
+
+    <p class="text-muted mb-0">
+
+        This post contains text only.
+
+    </p>
+
+</div>
+
+{% endif %}
+    <div
+        class="card-body"
+        style="cursor:pointer;"
+        onclick="window.location.href='{% url 'community_post_detail' post.id %}'">
+
+        <!-- Author -->
+
+        <div class="d-flex align-items-center mb-3">
+
+            {% if post.author.profile_photo %}
+
+                <a href="{% url 'community_user_profile' post.author.id %}"
+                   onclick="event.stopPropagation();">
+
+                    <img
+                        src="{{ post.author.profile_photo.url }}"
+                        class="dashboard-avatar me-3">
+
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'community_user_profile' post.author.id %}"
+                   class="text-decoration-none"
+                   onclick="event.stopPropagation();">
+
+                    <div class="dashboard-avatar-placeholder me-3">
+
+                        {{ post.author.user.username|first|upper }}
+
+                    </div>
+
+                </a>
+
+            {% endif %}
+
+            <div>
+
+                <a
+                    href="{% url 'community_user_profile' post.author.id %}"
+                    class="text-decoration-none text-dark fw-bold"
+                    onclick="event.stopPropagation();">
+
+                    {% if post.author.full_name %}
+
+                        {{ post.author.full_name }}
+
+                    {% else %}
+
+                        {{ post.author.user.username }}
+
+                    {% endif %}
+
+                </a>
+
+                <br>
+
+                <small class="text-muted">
+
+                    {{ post.get_role_display }}
+
+                    •
+
+                    {{ post.created_at|timesince }} ago
+
+                </small>
+
+            </div>
+
+        </div>
+
+        <!-- Badge -->
+
+        <span class="badge bg-primary rounded-pill mb-3">
+
+            {{ post.get_post_type_display }}
+
+        </span>
+
+        <!-- Title -->
+
+        <h5 class="fw-bold">
+
+            {{ post.title|truncatechars:45 }}
+
+        </h5>
+
+        <!-- Content -->
+
+        <p class="text-muted mb-4">
+
+            {{ post.content|truncatechars:100 }}
+
+        </p>
+
+        <!-- Footer -->
+
+        <div class="d-flex justify-content-between align-items-center border-top pt-3">
+
+            <div>
+
+                <span class="text-danger me-4">
+
+                    <i class="fas fa-heart me-1"></i>
+
+                    {{ post.likes.count }}
+
+                </span>
+
+                <span class="text-primary">
+
+                    <i class="fas fa-comment me-1"></i>
+
+                    {{ post.comments.count }}
+
+                </span>
+
+            </div>
+
+            <small class="text-primary fw-semibold">
+
+                Click to read →
+
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Image Modal -->
+
+<div
+    class="modal fade"
+    id="imageModal"
+    tabindex="-1">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content bg-dark border-0">
+
+            <div class="modal-header border-0">
+
+                <button
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body text-center">
+
+                <img
+                    id="modalImage"
+                    class="img-fluid rounded">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function openImageModal(url){
+
+    document.getElementById("modalImage").src = url;
+
+    new bootstrap.Modal(
+        document.getElementById("imageModal")
+    ).show();
+
+}
+
+</script>
+
+<style>
+
+.dashboard-post-card{
+    transition:.25s ease;
+}
+
+.dashboard-post-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 1rem 2rem rgba(0,0,0,.15)!important;
+}
+
+.dashboard-avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.dashboard-avatar-placeholder{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:#0d6efd;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+}
+
+.community-post-image{
+    object-fit:cover;
+}
+.community-image-wrapper{
+
+    height:240px;
+
+    overflow:hidden;
+
+}
+
+.community-card-image{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.community-placeholder{
+
+    height:240px;
+
+    background:linear-gradient(135deg,#eef4ff,#ffffff);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-bottom:1px solid #ececec;
+
+}
+
+.community-placeholder{
+
+    height:240px;
+
+    background:linear-gradient(135deg,#eef4ff,#ffffff);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    border-bottom:1px solid #ececec;
+
+}
+</style>

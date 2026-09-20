@@ -1,0 +1,637 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="row">
+
+<div class="col-lg-8">
+
+<div class="card shadow border-0 rounded-4 mb-4">
+
+<div class="card-body p-5">
+
+<h2 class="fw-bold mb-4">
+
+Candidate Review
+
+</h2>
+
+<table class="table table-bordered align-middle">
+
+<tr>
+
+<th width="35%">
+
+Candidate
+
+</th>
+
+<td>
+
+{{ application.student.full_name }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Email
+
+</th>
+
+<td>
+
+{{ application.student.user.email }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Company
+
+</th>
+
+<td>
+
+{{ application.placement.company }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Role
+
+</th>
+
+<td>
+
+{{ application.placement.role }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Package
+
+</th>
+
+<td>
+
+£{{ application.placement.package }}k / Per Annum
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Location
+
+</th>
+
+<td>
+
+{{ application.placement.location }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Applied On
+
+</th>
+
+<td>
+
+{{ application.applied_at|date:"d M Y • h:i A" }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Current Status
+
+</th>
+
+<td>
+
+{% if application.status == "pending" %}
+
+<span class="badge bg-secondary">
+
+Pending
+
+</span>
+
+{% elif application.status == "resume_reviewed" %}
+
+<span class="badge bg-primary">
+
+Resume Reviewed
+
+</span>
+
+{% elif application.status == "shortlisted" %}
+
+<span class="badge bg-info">
+
+Shortlisted
+
+</span>
+
+{% elif application.status == "interview_scheduled" %}
+
+<span class="badge bg-warning text-dark">
+
+Interview Scheduled
+
+</span>
+
+{% elif application.status == "interview_completed" %}
+
+<span class="badge bg-primary">
+
+Interview Completed
+
+</span>
+
+{% elif application.status == "offer_released" %}
+
+<span class="badge bg-success">
+
+Offer Released
+
+</span>
+
+{% elif application.status == "offer_accepted" %}
+
+<span class="badge bg-success">
+
+Offer Accepted
+
+</span>
+
+{% elif application.status == "rejected" %}
+
+<span class="badge bg-danger">
+
+Rejected
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="card shadow border-0 rounded-4">
+
+<div class="card-body">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label class="fw-bold mb-3">
+
+Update Candidate Status
+
+</label>
+
+<select
+name="status"
+class="form-select form-select-lg mb-4">
+
+<option value="resume_reviewed"
+{% if application.status == "resume_reviewed" %}selected{% endif %}>
+
+Resume Reviewed
+
+</option>
+
+<option value="shortlisted"
+{% if application.status == "shortlisted" %}selected{% endif %}>
+
+Shortlisted
+
+</option>
+
+<option value="interview_scheduled"
+{% if application.status == "interview_scheduled" %}selected{% endif %}>
+
+Interview Scheduled
+
+</option>
+
+<option value="interview_completed"
+{% if application.status == "interview_completed" %}selected{% endif %}>
+
+Interview Completed
+
+</option>
+
+<option value="offer_released"
+{% if application.status == "offer_released" %}selected{% endif %}>
+
+Offer Released
+
+</option>
+
+<option value="offer_accepted"
+{% if application.status == "offer_accepted" %}selected{% endif %}>
+
+Offer Accepted
+
+</option>
+
+<option value="rejected"
+{% if application.status == "rejected" %}selected{% endif %}>
+
+Rejected
+
+</option>
+
+</select>
+<div class="mb-4">
+
+<label class="fw-bold mb-2">
+
+Remarks (Optional)
+
+</label>
+
+<textarea
+
+name="remarks"
+
+class="form-control"
+
+rows="3"
+
+placeholder="Example: Resume looks good, proceed to interview."></textarea>
+
+</div>
+
+
+<div class="row g-4 mb-4">
+
+<div class="col-md-6">
+
+<div class="card border rounded-4 h-100">
+
+<div class="card-body">
+
+<h5 class="fw-bold mb-3">
+
+Student Profile
+
+</h5>
+
+<p>
+
+<strong>Name :</strong>
+
+{{ application.student.full_name }}
+
+</p>
+
+<p>
+
+<strong>Email :</strong>
+
+{{ application.student.user.email }}
+
+</p>
+
+<p>
+
+<strong>Phone :</strong>
+
+{{ application.student.phone|default:"-" }}
+
+</p>
+
+<p>
+
+<strong>Department :</strong>
+
+{{ application.student.department|default:"-" }}
+
+</p>
+
+<p class="mb-0">
+
+<strong>CGPA :</strong>
+
+{{ application.student.cgpa|default:"-" }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+<div class="card border rounded-4 h-100">
+
+<div class="card-body">
+
+<h5 class="fw-bold mb-3">
+
+Resume
+
+</h5>
+
+{% if application.student.resume %}
+
+<a
+
+href="{{ application.student.resume.url }}"
+
+target="_blank"
+
+class="btn btn-success rounded-pill w-100 mb-3">
+
+<i class="fas fa-file-pdf me-2"></i>
+
+Open Resume
+
+</a>
+
+{% else %}
+
+<div class="alert alert-warning">
+
+Resume not uploaded.
+
+</div>
+
+{% endif %}
+
+<h6 class="fw-bold mt-3">
+
+Skills
+
+</h6>
+
+<p class="mb-0">
+
+{{ application.student.skills|default:"Not Added" }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card border-0 bg-light rounded-4 mb-4">
+
+    <div class="card-body">
+
+        <h5 class="fw-bold mb-3">
+
+            Application Progress
+
+        </h5>
+
+        <div class="progress" style="height:18px;">
+
+            {% if application.status == "offer_accepted" %}
+
+            <div class="progress-bar bg-success" style="width:100%">
+
+                Selected
+
+            </div>
+
+            {% elif application.status == "offer_released" %}
+
+            <div class="progress-bar bg-success" style="width:90%">
+
+                Offer Released
+
+            </div>
+
+            {% elif application.status == "interview_completed" %}
+
+            <div class="progress-bar bg-info" style="width:75%">
+
+                Interview Completed
+
+            </div>
+
+            {% elif application.status == "interview_scheduled" %}
+
+            <div class="progress-bar bg-warning" style="width:60%">
+
+                Interview Scheduled
+
+            </div>
+
+            {% elif application.status == "shortlisted" %}
+
+            <div class="progress-bar bg-primary" style="width:40%">
+
+                Shortlisted
+
+            </div>
+
+            {% elif application.status == "resume_reviewed" %}
+
+            <div class="progress-bar" style="width:20%">
+
+                Resume Reviewed
+
+            </div>
+
+            {% elif application.status == "rejected" %}
+
+            <div class="progress-bar bg-danger" style="width:100%">
+
+                Rejected
+
+            </div>
+
+            {% else %}
+
+            <div class="progress-bar" style="width:5%">
+
+                Pending
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow border-0 rounded-4 mb-4">
+
+    <div class="card-body">
+
+        <h4 class="fw-bold mb-4">
+
+            Application Review History
+
+        </h4>
+
+        {% if history %}
+
+        <div class="border-start border-4 border-primary ps-4">
+
+            {% for item in history %}
+
+            <div class="mb-4">
+
+                <h6 class="fw-bold">
+
+                    {{ item.get_old_status_display }}
+
+                    <i class="fas fa-arrow-right mx-2"></i>
+
+                    {{ item.get_new_status_display }}
+
+                </h6>
+
+                <p class="text-muted small mb-2">
+
+                    {{ item.created_at|date:"d M Y • h:i A" }}
+
+                </p>
+
+                <p class="mb-2">
+
+                    <strong>Updated By:</strong>
+
+                    {{ item.updated_by.full_name|default:item.updated_by.user.username }}
+
+                </p>
+
+                {% if item.remarks %}
+
+                <div class="alert alert-light border">
+
+                    {{ item.remarks }}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="alert alert-info mb-0">
+
+            No review history available yet.
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+<div class="d-flex justify-content-between">
+
+{% if user.profile.role == "employer" %}
+
+<a
+
+href="{% url 'employer_candidates' %}"
+
+class="btn btn-outline-secondary rounded-pill px-4">
+
+Back
+
+</a>
+
+{% else %}
+
+<a
+
+href="{% url 'application_list' %}"
+
+class="btn btn-outline-secondary rounded-pill px-4">
+
+Back
+
+</a>
+
+{% endif %}
+
+<button
+
+type="submit"
+
+class="btn btn-primary rounded-pill px-5">
+
+<i class="fas fa-save me-2"></i>
+
+Update Status
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

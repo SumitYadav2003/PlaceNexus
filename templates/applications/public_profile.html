@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <a href="javascript:history.back()"
+       class="btn btn-outline-primary mb-4">
+
+        <i class="fas fa-arrow-left me-2"></i>
+
+        Back
+
+    </a>
+
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-body p-5 text-center">
+
+            <div class="avatar-circle mx-auto mb-4">
+
+                {{ profile_user.user.username|first|upper }}
+
+            </div>
+
+            <h2 class="fw-bold">
+
+                {% if profile_user.full_name %}
+
+                    {{ profile_user.full_name }}
+
+                {% else %}
+
+                    {{ profile_user.user.username }}
+
+                {% endif %}
+
+            </h2>
+
+            <span class="badge bg-primary">
+
+                {{ profile_user.get_role_display }}
+
+            </span>
+
+            <hr class="my-4">
+
+            {% if profile_user.role == "student" %}
+
+                <p><strong>College:</strong> {{ profile_user.college }}</p>
+
+                <p><strong>Branch:</strong> {{ profile_user.branch }}</p>
+
+                <p><strong>CGPA:</strong> {{ profile_user.cgpa }}</p>
+
+                <p><strong>Skills:</strong> {{ profile_user.skills }}</p>
+
+            {% elif profile_user.role == "employer" %}
+
+                <p>Employer Account</p>
+
+            {% elif profile_user.role == "coordinator" %}
+
+                <p>Placement Coordinator</p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-4">
+
+        Community Posts
+
+    </h3>
+
+    {% for post in posts %}
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+        <div class="card-body">
+
+            <span class="badge bg-primary">
+
+                {{ post.get_post_type_display }}
+
+            </span>
+
+            <h4 class="fw-bold mt-3">
+
+                {{ post.title }}
+
+            </h4>
+
+            <p>
+
+                {{ post.content }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="alert alert-info">
+
+        No community posts yet.
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<style>
+
+.avatar-circle{
+
+    width:100px;
+
+    height:100px;
+
+    border-radius:50%;
+
+    background:#0d6efd;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:40px;
+
+    font-weight:bold;
+
+}
+
+</style>
+
+{% endblock %}

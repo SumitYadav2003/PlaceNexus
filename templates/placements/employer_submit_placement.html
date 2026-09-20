@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h2 class="fw-bold mb-2">
+
+                        <i class="fas fa-briefcase text-primary me-2"></i>
+
+                        Submit Placement
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Create a placement opportunity for students. Your submission will be reviewed by the placement coordinator before it becomes visible.
+
+                    </p>
+
+                </div>
+
+                <a href="{% url 'employer_dashboard' %}"
+                   class="btn btn-outline-primary rounded-pill mt-3 mt-lg-0">
+
+                    <i class="fas fa-arrow-left me-2"></i>
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="card border-0 shadow rounded-4">
+
+            <div class="card-body p-5">
+
+                <h4 class="fw-bold mb-4">
+
+                    <i class="fas fa-building me-2 text-primary"></i>
+
+                    Job Information
+
+                </h4>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Company
+
+                        </label>
+
+                        {{ form.company }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Job Role
+
+                        </label>
+
+                        {{ form.role }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Package (£k / Per Annum)
+
+                        </label>
+
+                        {{ form.package }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Location
+
+                        </label>
+
+                        {{ form.location }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Application Deadline
+
+                        </label>
+
+                        {{ form.deadline }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Company Website
+
+                        </label>
+
+                        {{ form.company_website }}
+
+                    </div>
+
+                </div>
+
+                <hr class="my-5">
+
+                <h4 class="fw-bold mb-4">
+
+                    <i class="fas fa-code me-2 text-primary"></i>
+
+                    Skills & Description
+
+                </h4>
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+
+                        Required Skills
+
+                    </label>
+
+                    {{ form.required_skills }}
+
+                </div>
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+
+                        Job Description
+
+                    </label>
+
+                    {{ form.description }}
+
+                </div>
+
+                <hr class="my-5">
+
+                <h4 class="fw-bold mb-4">
+
+                    <i class="fas fa-building-columns me-2 text-primary"></i>
+
+                    Company Details
+
+                </h4>
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+
+                        About Company
+
+                    </label>
+
+                    {{ form.company_about }}
+
+                </div>
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+
+                        Eligibility Criteria
+
+                    </label>
+
+                    {{ form.eligibility }}
+
+                </div>
+
+                <div class="alert alert-info rounded-4 border-0 mt-4">
+
+                    <i class="fas fa-circle-info me-2"></i>
+
+                    Submitted placements are reviewed by the placement coordinator before they become visible to students.
+
+                </div>
+
+                <div class="text-end mt-5">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-lg rounded-pill px-5">
+
+                        <i class="fas fa-paper-plane me-2"></i>
+
+                        Submit Placement
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+<style>
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+textarea{
+
+    min-height:140px;
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,414 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ================= Header ================= -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h2 class="fw-bold mb-2">
+
+                        <i class="fas fa-briefcase text-primary me-2"></i>
+
+                        Browse Placements
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Find placement opportunities that match your career goals.
+
+                    </p>
+
+                </div>
+
+                <a href="{% url 'student_dashboard' %}"
+                   class="btn btn-outline-primary rounded-pill mt-3 mt-lg-0">
+
+                    <i class="fas fa-arrow-left me-2"></i>
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Search ================= -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-5">
+
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            placeholder="Search Company or Role..."
+                            value="{{ search|default:'' }}">
+
+                    </div>
+
+                    <div class="col-lg-4">
+
+                        <select
+                            name="location"
+                            class="form-select">
+
+                            <option value="">
+
+                                All Locations
+
+                            </option>
+
+                            {% for location in locations %}
+
+                                <option
+                                    value="{{ location }}"
+                                    {% if location == selected_location %}selected{% endif %}>
+
+                                    {{ location }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-lg-3 d-grid">
+
+                        <button
+                            class="btn btn-primary">
+
+                            <i class="fas fa-search me-2"></i>
+
+                            Search
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Placements ================= -->
+
+    <div class="row">
+
+    {% for placement in placements %}
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h4 class="fw-bold mb-1">
+
+                                <a
+                                    href="{% url 'company_page' placement.id %}"
+                                    class="company-link">
+
+                                    🏢 {{ placement.company }}
+
+                                </a>
+
+                            </h4>
+
+                            <h5 class="text-primary">
+
+                                {{ placement.role }}
+
+                            </h5>
+
+                        </div>
+
+                        <div>
+
+                            {% if placement.status == "open" %}
+
+                                <span class="badge bg-success">
+
+                                    Open
+
+                                </span>
+
+                            {% elif placement.status == "closed" %}
+
+                                <span class="badge bg-danger">
+
+                                    Closed
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ placement.status|title }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-6 mb-3">
+
+                            <small class="text-muted">
+
+                                Package
+
+                            </small>
+
+                            <h6>
+
+                                💰 £{{ placement.package }}k / Per Annum
+
+                            </h6>
+
+                        </div>
+
+                        <div class="col-6 mb-3">
+
+                            <small class="text-muted">
+
+                                Location
+
+                            </small>
+
+                            <h6>
+
+                                📍 {{ placement.location }}
+
+                            </h6>
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <small class="text-muted">
+
+                                Apply Before
+
+                            </small>
+
+                            <h6 class="text-danger">
+
+                                🗓 {{ placement.deadline }}
+
+                            </h6>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                                        <!-- ================= Actions ================= -->
+
+                    <div class="d-grid gap-2 mt-4">
+
+                        {% if placement.id in applied_ids %}
+
+                            <button
+                                class="btn btn-success rounded-pill"
+                                disabled>
+
+                                <i class="fas fa-check-circle me-2"></i>
+
+                                Already Applied
+
+                            </button>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'apply_placement' placement.id %}"
+                                class="btn btn-primary rounded-pill">
+
+                                <i class="fas fa-paper-plane me-2"></i>
+
+                                Apply Now
+
+                            </a>
+
+                        {% endif %}
+
+                        {% if placement.id in saved_ids %}
+
+                            <a
+                                href="{% url 'remove_saved_placement' placement.id %}"
+                                class="btn btn-outline-danger rounded-pill">
+
+                                <i class="fas fa-heart me-2"></i>
+
+                                Saved Placement
+
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'save_placement' placement.id %}"
+                                class="btn btn-outline-secondary rounded-pill">
+
+                                <i class="far fa-heart me-2"></i>
+
+                                Save Placement
+
+                            </a>
+
+                        {% endif %}
+
+                        <a
+                            href="{% url 'company_page' placement.id %}"
+                            class="btn btn-outline-primary rounded-pill">
+
+                            <i class="fas fa-building me-2"></i>
+
+                            Company Details
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="col-12">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body text-center py-5">
+
+                    <i class="fas fa-briefcase fa-4x text-secondary mb-4"></i>
+
+                    <h3 class="fw-bold">
+
+                        No Placements Found
+
+                    </h3>
+
+                    <p class="text-muted">
+
+                        Try changing your search or location filters.
+
+                    </p>
+
+                    <a
+                        href="{% url 'browse_placements' %}"
+                        class="btn btn-primary rounded-pill mt-3">
+
+                        View All Placements
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+    </div>
+
+</div>
+
+<style>
+
+.company-link{
+
+    color:#0d6efd;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+.company-link:hover{
+
+    color:#0a58ca;
+
+}
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.badge{
+
+    font-size:.8rem;
+
+    padding:.55rem .8rem;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ================= Header ================= -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h2 class="fw-bold mb-2">
+
+                        <i class="fas fa-briefcase text-primary me-2"></i>
+
+                        My Placements
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Manage all placement opportunities submitted by your company.
+
+                    </p>
+
+                </div>
+
+                <div class="mt-3 mt-lg-0">
+
+                    <a href="{% url 'employer_dashboard' %}"
+                       class="btn btn-outline-primary rounded-pill me-2">
+
+                        <i class="fas fa-arrow-left me-2"></i>
+
+                        Dashboard
+
+                    </a>
+
+                    <a href="{% url 'employer_submit_placement' %}"
+                       class="btn btn-primary rounded-pill">
+
+                        <i class="fas fa-plus-circle me-2"></i>
+
+                        Submit Placement
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Statistics ================= -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h2 class="fw-bold text-primary">
+
+                        {{ placements.count }}
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Total Placements
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h2 class="fw-bold text-success">
+
+                        {{ placements|length }}
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Submitted
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h2 class="fw-bold text-warning">
+
+                        {{ placements|length }}
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Under Review
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Placements Table ================= -->
+
+    <div class="card border-0 shadow rounded-4">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Company</th>
+
+                            <th>Role</th>
+
+                            <th>Package</th>
+
+                            <th>Status</th>
+
+                            <th>Submitted</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for placement in placements %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+
+                                    🏢 {{ placement.company }}
+
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                {{ placement.role }}
+
+                            </td>
+
+                            <td>
+
+                                ₹ {{ placement.package }}
+
+                            </td>
+
+                            <td>
+
+                                {% if placement.approved %}
+
+                                    <span class="badge bg-success rounded-pill">
+
+                                        ✅ Approved
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-warning text-dark rounded-pill">
+
+                                        ⏳ Pending Approval
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {{ placement.created_at|date:"d M Y" }}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="5">
+
+                                <div class="text-center py-5">
+
+                                    <i class="fas fa-briefcase fa-4x text-muted mb-3"></i>
+
+                                    <h4 class="fw-bold">
+
+                                        No Placements Yet
+
+                                    </h4>
+
+                                    <p class="text-muted">
+
+                                        Submit your first placement opportunity to start hiring students.
+
+                                    </p>
+
+                                    <a href="{% url 'employer_submit_placement' %}"
+                                       class="btn btn-primary rounded-pill">
+
+                                        <i class="fas fa-plus me-2"></i>
+
+                                        Submit Placement
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.table tbody tr:hover{
+
+    background:#f8f9fa;
+
+}
+
+.badge{
+
+    font-size:.82rem;
+
+    padding:.55rem .9rem;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+</style>
+
+{% endblock %}

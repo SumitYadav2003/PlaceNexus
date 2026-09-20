@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-8">
+
+            {% include "applications/community/_header.html" %}
+
+            <!-- ================= Pinned Posts ================= -->
+
+            {% if pinned_posts %}
+
+            <div class="mb-5">
+
+                <h3 class="fw-bold mb-4">
+
+                    📌 Important Announcements
+
+                </h3>
+
+                {% for post in pinned_posts %}
+
+                    {% include "applications/community/_post_card.html" %}
+
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+            <!-- ================= Latest Posts ================= -->
+
+            <div>
+
+                <h3 class="fw-bold mb-4">
+
+                    📰 Latest Community Posts
+
+                </h3>
+
+                {% if latest_posts %}
+
+                    {% for post in latest_posts %}
+
+                        {% include "applications/community/_post_card.html" %}
+
+                    {% endfor %}
+
+                {% else %}
+
+                    {% include "applications/community/_empty_feed.html" %}
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% include "applications/community/_image_modal.html" %}
+{% include "applications/community/_community_js.html" %}
+{% include "applications/community/_community_css.html" %}
+
+{% endblock %}

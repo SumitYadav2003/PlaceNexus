@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="mb-0">
+            Manage Placements
+        </h2>
+
+        <div>
+
+            <a href="{% url 'coordinator_dashboard' %}"
+               class="btn btn-outline-primary me-2">
+
+                <i class="fas fa-arrow-left me-2"></i>
+                Dashboard
+
+            </a>
+
+
+           {% comment %} <a href="{% url 'add_placement' %}"
+               class="btn btn-primary">
+
+                <i class="fas fa-plus me-2"></i>
+                Add Placement
+
+            </a> {% endcomment %}
+
+        </div>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Company</th>
+                        <th>Role</th>
+                        <th>Package</th>
+                        <th>Location</th>
+                        <th>Posted By</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for placement in placements %}
+
+                    <tr>
+
+                        <td>{{ placement.company }}</td>
+
+                        <td>{{ placement.role }}</td>
+
+                        <td>£{{ placement.package }}k / Per Annum</td>
+
+                        <td>{{ placement.location }}</td>
+
+                        <td>
+
+                            {% if placement.created_by %}
+
+                                {{ placement.created_by.full_name|default:placement.created_by.user.username }}
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if placement.status == "active" %}
+
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+
+                            {% elif placement.status == "closed" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Closed
+                                </span>
+
+                            {% elif placement.status == "archived" %}
+
+                                <span class="badge bg-secondary">
+                                    Archived
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if placement.status == "archived" %}
+
+                                <a href="{% url 'restore_placement' placement.id %}"
+                                   class="btn btn-success btn-sm">
+
+                                    Restore
+
+                                </a>
+
+                                <a href="{% url 'permanent_delete_placement' placement.id %}"
+                                   class="btn btn-danger btn-sm">
+
+                                    Delete
+
+                                </a>
+
+                            {% else %}
+
+                                <a href="{% url 'edit_placement' placement.id %}"
+                                   class="btn btn-warning btn-sm">
+
+                                    Edit
+
+                                </a>
+
+                                <a href="{% url 'delete_placement' placement.id %}"
+                                   class="btn btn-secondary btn-sm">
+
+                                    Archive
+
+                                </a>
+
+                                <a href="{% url 'permanent_delete_placement' placement.id %}"
+                                   class="btn btn-danger btn-sm">
+
+                                    Delete
+
+                                </a>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7" class="text-center">
+
+                            No placements available.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

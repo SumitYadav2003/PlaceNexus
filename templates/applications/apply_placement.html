@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <!-- ================= Header ================= -->
+
+            <div class="card border-0 shadow rounded-4 mb-4">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                        <div>
+
+                            <h2 class="fw-bold mb-2">
+
+                                <i class="fas fa-paper-plane text-primary me-2"></i>
+
+                                Apply for Placement
+
+                            </h2>
+
+                            <p class="text-muted mb-0">
+
+                                Review the placement details before submitting your application.
+
+                            </p>
+
+                        </div>
+
+                        <a href="{% url 'browse_placements' %}"
+                           class="btn btn-outline-primary rounded-pill mt-3 mt-lg-0">
+
+                            <i class="fas fa-arrow-left me-2"></i>
+
+                            Browse Placements
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================= Placement Details ================= -->
+
+            <div class="card border-0 shadow rounded-4 mb-4">
+
+                <div class="card-body p-4">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted">
+
+                                Company
+
+                            </small>
+
+                            <h4 class="fw-bold">
+
+                                🏢 {{ placement.company }}
+
+                            </h4>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted">
+
+                                Position
+
+                            </small>
+
+                            <h4 class="text-primary">
+
+                                {{ placement.role }}
+
+                            </h4>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <small class="text-muted">
+
+                                Package
+
+                            </small>
+
+                            <h5>
+
+                                💰 £{{ placement.package }}k / Per Annum
+
+                            </h5>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <small class="text-muted">
+
+                                Location
+
+                            </small>
+
+                            <h5>
+
+                                📍 {{ placement.location }}
+
+                            </h5>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <small class="text-muted">
+
+                                Deadline
+
+                            </small>
+
+                            <h5 class="text-danger">
+
+                                📅 {{ placement.deadline }}
+
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================= Resume ================= -->
+
+            <div class="card border-0 shadow rounded-4 mb-4">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-3">
+
+                        Resume
+
+                    </h5>
+
+                    {% if profile.resume %}
+
+                        <a
+                            href="{{ profile.resume.url }}"
+                            target="_blank"
+                            class="btn btn-outline-success rounded-pill">
+
+                            <i class="fas fa-file-pdf me-2"></i>
+
+                            View Current Resume
+
+                        </a>
+
+                    {% else %}
+
+                        <div class="alert alert-warning rounded-4">
+
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+
+                            No resume uploaded. Please upload your resume from your profile before applying.
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- ================= Application Form ================= -->
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body p-4">
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+
+                                Cover Letter
+
+                            </label>
+
+                            {{ form.cover_letter }}
+
+                            <small class="text-muted">
+
+                                Briefly explain why you are a good fit for this role.
+
+                            </small>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+
+                                Availability
+
+                            </label>
+
+                            {{ form.availability }}
+
+                        </div>
+
+                        <div class="alert alert-info rounded-4">
+
+                            <i class="fas fa-info-circle me-2"></i>
+
+                            Please verify all information before submitting. Once submitted, your application will be visible to the placement coordinator.
+
+                        </div>
+
+                        <div class="d-grid mt-4">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg rounded-pill">
+
+                                <i class="fas fa-paper-plane me-2"></i>
+
+                                Submit Application
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+textarea{
+
+    min-height:160px;
+
+}
+
+</style>
+
+{% endblock %}

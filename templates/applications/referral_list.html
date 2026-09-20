@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h2 class="fw-bold mb-2">
+
+                        <i class="fas fa-user-friends text-primary me-2"></i>
+
+                        Referral Opportunities
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Explore referral opportunities posted by employees and request referrals for your dream companies.
+
+                    </p>
+
+                </div>
+
+                <a href="{% url 'student_dashboard' %}"
+                   class="btn btn-outline-primary rounded-pill mt-3 mt-lg-0">
+
+                    <i class="fas fa-arrow-left me-2"></i>
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h2 class="fw-bold text-primary">
+
+                        {{ referrals.count }}
+
+                    </h2>
+
+                    <small class="text-muted">
+
+                        Referral Opportunities
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Referral Cards -->
+
+    <div class="row">
+
+        {% for referral in referrals %}
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-start">
+
+                        <div>
+
+                            <h4 class="fw-bold">
+
+                                🏢 {{ referral.company }}
+
+                            </h4>
+
+                            <h6 class="text-primary">
+
+                                {{ referral.role }}
+
+                            </h6>
+
+                        </div>
+
+                        {% if referral.status == "open" %}
+
+                            <span class="badge bg-success rounded-pill">
+
+                                Open
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger rounded-pill">
+
+                                Closed
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    <hr>
+
+                    <p class="text-muted">
+
+                        {{ referral.description }}
+
+                    </p>
+
+                    <div class="row mb-4">
+
+                        <div class="col-6">
+
+                            <small class="text-muted">
+
+                                Deadline
+
+                            </small>
+
+                            <div class="fw-semibold">
+
+                                {{ referral.deadline }}
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-6 text-end">
+
+                            <small class="text-muted">
+
+                                Status
+
+                            </small>
+
+                            <div>
+
+                                {{ referral.get_status_display }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="d-grid">
+
+                        {% if request_map.items %}
+
+                            {% for id,status in request_map.items %}
+
+                                {% if id == referral.id %}
+
+                                    {% if status == "pending" %}
+
+                                        <button class="btn btn-warning rounded-pill" disabled>
+
+                                            <i class="fas fa-clock me-2"></i>
+
+                                            Request Pending
+
+                                        </button>
+
+                                    {% elif status == "approved" %}
+
+                                        <button class="btn btn-success rounded-pill" disabled>
+
+                                            <i class="fas fa-check me-2"></i>
+
+                                            Approved
+
+                                        </button>
+
+                                    {% else %}
+
+                                        <button class="btn btn-danger rounded-pill" disabled>
+
+                                            <i class="fas fa-times me-2"></i>
+
+                                            Rejected
+
+                                        </button>
+
+                                    {% endif %}
+
+                                {% endif %}
+
+                            {% endfor %}
+
+                        {% endif %}
+
+                        {% if referral.id not in request_map %}
+
+                            <a href="{% url 'request_referral' referral.id %}"
+                               class="btn btn-primary rounded-pill">
+
+                                <i class="fas fa-paper-plane me-2"></i>
+
+                                Request Referral
+
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body text-center py-5">
+
+                    <i class="fas fa-user-friends fa-4x text-muted mb-4"></i>
+
+                    <h3 class="fw-bold">
+
+                        No Referral Opportunities
+
+                    </h3>
+
+                    <p class="text-muted">
+
+                        New referral opportunities will appear here when employees post them.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<style>
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.badge{
+
+    font-size:.82rem;
+
+    padding:.55rem .9rem;
+
+}
+
+</style>
+
+{% endblock %}

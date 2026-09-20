@@ -1,0 +1,295 @@
+<style>
+
+/* ================= Community Cards ================= */
+
+.community-card,
+.dashboard-post-card{
+
+    border:none;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    background:#fff;
+
+    transition:.30s ease;
+
+    box-shadow:0 .5rem 1.5rem rgba(0,0,0,.08);
+
+}
+
+.community-card:hover,
+.dashboard-post-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 1rem 2rem rgba(13,110,253,.18);
+
+}
+
+/* ================= Pinned Posts ================= */
+
+.pinned-post{
+
+    border-left:5px solid #dc3545;
+
+    background:linear-gradient(to right,#fff7f7,#ffffff);
+
+}
+
+/* ================= Images ================= */
+
+.community-image,
+.community-post-image{
+
+    display:block;
+
+    width:100%;
+
+    max-height:520px;
+
+    object-fit:cover;
+
+    background:#f8f9fa;
+
+    cursor:pointer;
+
+    transition:.30s ease;
+
+}
+
+.community-image:hover,
+.community-post-image:hover{
+
+    transform:scale(1.015);
+
+}
+
+/* ================= Profile ================= */
+
+.profile-avatar,
+.dashboard-avatar{
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:3px solid #0d6efd;
+
+}
+
+.avatar-circle,
+.dashboard-avatar-placeholder{
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#0d6efd;
+
+    color:#fff;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+/* ================= Comments ================= */
+
+.comment-avatar{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.comment-avatar-placeholder{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#6c757d;
+
+    color:#fff;
+
+    font-weight:bold;
+
+}
+
+.comment-card{
+
+    border:none;
+
+    border-radius:18px;
+
+    background:#f8f9fa;
+
+    padding:16px;
+
+    transition:.25s;
+
+}
+
+.comment-card:hover{
+
+    background:#eef5ff;
+
+}
+
+/* ================= Buttons ================= */
+
+.btn{
+
+    transition:.25s ease;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.btn-primary{
+
+    box-shadow:0 .25rem .75rem rgba(13,110,253,.15);
+
+}
+
+/* ================= Badges ================= */
+
+.badge{
+
+    font-size:.80rem;
+
+    font-weight:600;
+
+    letter-spacing:.35px;
+
+    padding:.55rem .8rem;
+
+}
+
+/* ================= Links ================= */
+
+.profile-link{
+
+    color:#212529;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+}
+
+.profile-link:hover{
+
+    color:#0d6efd;
+
+}
+
+/* ================= Cards ================= */
+
+.card{
+
+    border:none;
+
+    border-radius:20px;
+
+}
+
+/* ================= Forms ================= */
+
+.form-control,
+.form-select{
+
+    border-radius:12px;
+
+}
+
+textarea{
+
+    resize:none;
+
+}
+
+/* ================= Stats ================= */
+
+.community-stat{
+
+    border-radius:18px;
+
+    background:#fff;
+
+    transition:.25s;
+
+}
+
+.community-stat:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* ================= Mobile ================= */
+
+@media(max-width:768px){
+
+    .profile-avatar,
+    .dashboard-avatar{
+
+        width:50px;
+
+        height:50px;
+
+    }
+
+    .avatar-circle,
+    .dashboard-avatar-placeholder{
+
+        width:50px;
+
+        height:50px;
+
+        font-size:20px;
+
+    }
+
+    .community-image,
+    .community-post-image{
+
+        max-height:300px;
+
+    }
+
+}
+
+</style>

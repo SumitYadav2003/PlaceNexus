@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body p-5 text-center">
+
+                    <i class="fas fa-trash-alt fa-5x text-danger mb-4"></i>
+
+                    <h2 class="fw-bold">
+
+                        Delete Post?
+
+                    </h2>
+
+                    <p class="text-muted mt-3">
+
+                        This action cannot be undone.
+
+                    </p>
+
+                    <div class="alert alert-light mt-4">
+
+                        <h5 class="fw-bold">
+
+                            {{ post.title }}
+
+                        </h5>
+
+                    </div>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <button
+                            class="btn btn-danger rounded-pill px-5">
+
+                            <i class="fas fa-trash me-2"></i>
+
+                            Delete Forever
+
+                        </button>
+
+                        <a
+                            href="{% url 'community_post_detail' post.id %}"
+                            class="btn btn-outline-secondary rounded-pill px-5 ms-2">
+
+                            Cancel
+
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

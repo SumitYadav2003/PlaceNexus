@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h2 class="fw-bold mb-2">
+
+                        <i class="fas fa-user-friends text-primary me-2"></i>
+
+                        Create Referral Opportunity
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Publish a referral opportunity that eligible students can request.
+
+                    </p>
+
+                </div>
+
+                <a href="{% url 'coordinator_dashboard' %}"
+                   class="btn btn-outline-primary rounded-pill mt-3 mt-lg-0">
+
+                    <i class="fas fa-arrow-left me-2"></i>
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="card border-0 shadow rounded-4">
+
+            <div class="card-body p-5">
+
+                <h4 class="fw-bold mb-4">
+
+                    <i class="fas fa-building me-2 text-primary"></i>
+
+                    Referral Details
+
+                </h4>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Company
+
+                        </label>
+
+                        {{ form.company }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Job Role
+
+                        </label>
+
+                        {{ form.role }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Application Deadline
+
+                        </label>
+
+                        {{ form.deadline }}
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Status
+
+                        </label>
+
+                        {{ form.status }}
+
+                    </div>
+
+                    <div class="col-12">
+
+                        <label class="form-label fw-semibold">
+
+                            Description
+
+                        </label>
+
+                        {{ form.description }}
+
+                    </div>
+
+                </div>
+
+                <div class="alert alert-info rounded-4 border-0 mt-5">
+
+                    <i class="fas fa-circle-info me-2"></i>
+
+                    Students will be able to request referrals only while this opportunity is marked as <strong>Open</strong>.
+
+                </div>
+
+                <div class="text-end mt-5">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-lg rounded-pill px-5">
+
+                        <i class="fas fa-save me-2"></i>
+
+                        Create Referral
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+<style>
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+textarea{
+
+    min-height:160px;
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,182 @@
+<script>
+
+function getCookie(name){
+
+    let cookieValue=null;
+
+    if(document.cookie && document.cookie!==""){
+
+        const cookies=document.cookie.split(";");
+
+        for(let i=0;i<cookies.length;i++){
+
+            const cookie=cookies[i].trim();
+
+            if(cookie.substring(0,name.length+1)===(name+"=")){
+
+                cookieValue=decodeURIComponent(
+
+                    cookie.substring(name.length+1)
+
+                );
+
+                break;
+
+            }
+
+        }
+
+    }
+
+    return cookieValue;
+
+}
+
+const csrftoken=getCookie("csrftoken");
+
+function sharePost(url){
+
+    navigator.clipboard.writeText(url).then(function(){
+
+        const toastElement=document.getElementById("shareToast");
+
+        if(toastElement){
+
+            new bootstrap.Toast(toastElement).show();
+
+        }
+
+    });
+
+}
+
+function openImageModal(url){
+
+    document.getElementById("modalImage").src=url;
+
+    new bootstrap.Modal(
+
+        document.getElementById("imageModal")
+
+    ).show();
+
+}
+
+// ================= LIKE =================
+
+document.addEventListener("click",function(e){
+
+    const btn=e.target.closest(".like-btn");
+
+    if(!btn) return;
+
+    e.preventDefault();
+
+    fetch(btn.dataset.url,{
+
+        method:"POST",
+
+        headers:{
+
+            "X-CSRFToken":csrftoken,
+
+            "X-Requested-With":"XMLHttpRequest"
+
+        }
+
+    })
+
+    .then(r=>r.json())
+
+    .then(data=>{
+
+        btn.classList.toggle("btn-danger",data.liked);
+
+        btn.classList.toggle("btn-outline-danger",!data.liked);
+
+        btn.innerHTML=`
+            <i class="fas fa-heart me-2"></i>
+            ${data.liked?"Liked":"Like"}
+        `;
+
+        const counter=document.getElementById(
+
+            `like-count-${data.post_id}`
+
+        );
+
+        if(counter){
+
+            counter.innerHTML=`
+                <i class="fas fa-heart me-1"></i>
+                ${data.likes}
+            `;
+
+        }
+
+    })
+
+    .catch(console.error);
+
+});
+
+// ================= SAVE =================
+
+document.addEventListener("click",function(e){
+
+    const btn=e.target.closest(".save-btn");
+
+    if(!btn) return;
+
+    e.preventDefault();
+
+    fetch(btn.dataset.url,{
+
+        method:"POST",
+
+        headers:{
+
+            "X-CSRFToken":csrftoken,
+
+            "X-Requested-With":"XMLHttpRequest"
+
+        }
+
+    })
+
+    .then(r=>r.json())
+
+    .then(data=>{
+
+        btn.classList.toggle("btn-warning",data.saved);
+
+        btn.classList.toggle("btn-outline-warning",!data.saved);
+
+        btn.innerHTML=`
+            <i class="${data.saved?"fas":"far"} fa-bookmark me-2"></i>
+            ${data.saved?"Saved":"Save"}
+        `;
+
+    })
+
+    .catch(console.error);
+
+});
+
+// ================= IMAGE =================
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    document.querySelectorAll(".community-image").forEach(function(img){
+
+        img.onclick=function(){
+
+            openImageModal(this.src);
+
+        };
+
+    });
+
+});
+
+</script>

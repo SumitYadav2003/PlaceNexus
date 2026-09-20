@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>PlaceNexus</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          rel="stylesheet">
+<style>
+
+:root{
+
+--primary:#2563eb;
+--primary-dark:#1d4ed8;
+--secondary:#0f172a;
+--light:#f8fbff;
+--card-shadow:0 12px 35px rgba(37,99,235,.10);
+
+}
+
+html{
+
+scroll-behavior:smooth;
+
+}
+
+body{
+
+background:linear-gradient(180deg,#edf4ff 0%,#f8fbff 35%,#ffffff 100%);
+font-family:"Segoe UI",sans-serif;
+color:#1e293b;
+
+}
+
+.navbar{
+
+background:white!important;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+padding:14px 0;
+
+}
+
+.navbar-brand{
+
+font-size:2rem;
+font-weight:800;
+color:var(--primary)!important;
+
+}
+
+.nav-link{
+
+font-weight:600;
+color:#334155!important;
+transition:.25s;
+
+}
+
+.nav-link:hover{
+
+color:var(--primary)!important;
+
+}
+
+.navbar-user{
+
+background:#f8fbff;
+
+padding:8px 16px;
+
+border-radius:999px;
+
+font-weight:600;
+
+border:1px solid #dbeafe;
+
+}
+
+.notification-btn{
+
+position:relative;
+
+width:48px;
+
+height:48px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+border-radius:50%;
+
+background:white;
+
+border:1px solid #dbeafe;
+
+transition:.25s;
+
+}
+
+.notification-btn:hover{
+
+background:#eff6ff;
+
+transform:translateY(-2px);
+
+}
+
+.notification-dot{
+
+position:absolute;
+
+top:10px;
+
+right:12px;
+
+width:10px;
+
+height:10px;
+
+background:#ef4444;
+
+border-radius:50%;
+
+border:2px solid white;
+
+}
+
+.dropdown-menu{
+
+border-radius:20px;
+
+overflow:hidden;
+
+box-shadow:0 18px 40px rgba(0,0,0,.12);
+
+}
+
+.dropdown-menu li{
+
+transition:.2s;
+
+}
+
+.dropdown-menu li:hover{
+
+background:#eff6ff;
+
+}
+
+.dropdown-menu a{
+
+display:block;
+
+color:inherit;
+
+}
+
+.dropdown-menu small{
+
+font-size:.8rem;
+
+}
+
+.btn{
+
+border-radius:999px;
+padding:.55rem 1.3rem;
+font-weight:600;
+transition:.25s;
+
+}
+
+.btn-primary{
+
+background:var(--primary);
+border-color:var(--primary);
+
+}
+
+.btn-primary:hover{
+
+background:var(--primary-dark);
+border-color:var(--primary-dark);
+transform:translateY(-2px);
+
+}
+
+.btn-outline-primary:hover{
+
+transform:translateY(-2px);
+
+}
+
+.card{
+
+border:none;
+border-radius:24px;
+box-shadow:var(--card-shadow);
+
+}
+
+.card:hover{
+
+transform:translateY(-3px);
+transition:.25s;
+
+}
+
+footer{
+
+margin-top:80px;
+background:#0f172a;
+color:white;
+padding:45px 0;
+
+}
+
+.footer-text{
+
+opacity:.8;
+
+}
+
+.alert{
+
+border:none;
+border-radius:18px;
+
+}
+
+.section-title{
+
+font-size:2rem;
+font-weight:800;
+
+}
+
+.stats-card{
+
+background:white;
+border-radius:24px;
+padding:30px;
+box-shadow:var(--card-shadow);
+
+}
+
+.stats-card h2{
+
+font-size:2.3rem;
+font-weight:800;
+color:var(--primary);
+
+}
+
+.job-card{
+
+border:1px solid #e8eef9;
+transition:.25s;
+
+}
+
+.job-card:hover{
+
+border-color:var(--primary);
+
+}
+
+.badge-soft{
+
+background:#e8f0ff;
+color:var(--primary);
+padding:8px 14px;
+border-radius:999px;
+font-weight:600;
+
+}
+
+.hero-gradient{
+
+background:linear-gradient(135deg,#2563eb,#60a5fa);
+color:white;
+border-radius:35px;
+padding:70px;
+
+}
+
+.hero-gradient h1{
+
+font-size:3.8rem;
+font-weight:800;
+
+}
+
+.hero-gradient p{
+
+font-size:1.15rem;
+opacity:.92;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg">
+
+<div class="container">
+
+<a class="navbar-brand"
+href="{% url 'home' %}">
+
+<i class="fas fa-graduation-cap me-2"></i>
+
+PlaceNexus
+
+</a>
+
+<button
+class="navbar-toggler"
+data-bs-toggle="collapse"
+data-bs-target="#navbar">
+
+<span class="navbar-toggler-icon"></span>
+
+</button>
+
+<div class="collapse navbar-collapse"
+id="navbar">
+
+<ul class="navbar-nav ms-auto align-items-lg-center">
+
+{% if user.is_authenticated %}
+
+<li class="nav-item me-2">
+
+{% if user.profile.role == "student" %}
+
+<a href="{% url 'student_dashboard' %}"
+class="btn btn-outline-primary">
+
+<i class="fas fa-house me-2"></i>
+
+Dashboard
+
+</a>
+
+{% elif user.profile.role == "coordinator" %}
+
+<a href="{% url 'coordinator_dashboard' %}"
+class="btn btn-outline-primary">
+
+<i class="fas fa-house me-2"></i>
+
+Dashboard
+
+</a>
+
+{% elif user.profile.role == "employer" %}
+
+<a href="{% url 'employer_dashboard' %}"
+class="btn btn-outline-primary">
+
+<i class="fas fa-house me-2"></i>
+
+Dashboard
+
+</a>
+
+{% endif %}
+
+</li>
+
+<li class="nav-item me-2">
+
+<a href="{% url 'profile' %}"
+class="btn btn-primary">
+
+<i class="fas fa-user me-2"></i>
+
+My Profile
+
+</a>
+
+</li>
+<li class="nav-item dropdown me-3">
+
+<a
+class="notification-btn text-decoration-none dropdown-toggle"
+href="#"
+role="button"
+data-bs-toggle="dropdown"
+aria-expanded="false">
+
+<i class="fas fa-bell text-primary"></i>
+
+{% if user.profile.notifications.exists %}
+
+<span class="notification-dot"></span>
+
+{% endif %}
+
+</a>
+
+<ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 p-0"
+style="width:380px;">
+
+<li class="px-4 py-3 border-bottom d-flex justify-content-between align-items-center">
+
+<h6 class="fw-bold mb-0">
+
+Notifications
+
+</h6>
+
+<a
+href="{% url 'notifications' %}"
+class="small text-decoration-none">
+
+View All
+
+</a>
+
+</li>
+
+{% for notification in user.profile.notifications.all|slice:":5" %}
+
+<li>
+
+<a
+href="{% url 'mark_notification_read' notification.id %}"
+class="text-decoration-none text-dark">
+
+<div class="px-4 py-3">
+
+<div class="fw-semibold">
+
+{{ notification.title }}
+
+</div>
+
+<small class="text-muted d-block mb-1">
+
+{{ notification.message }}
+
+</small>
+
+<small class="text-secondary">
+
+{{ notification.created_at|date:"d M Y • h:i A" }}
+
+</small>
+
+</div>
+
+</a>
+
+</li>
+
+{% empty %}
+
+<li>
+
+<div class="px-4 py-4 text-center text-muted">
+
+No notifications available.
+
+</div>
+
+</li>
+
+{% endfor %}
+{% if user.profile.notifications.exists %}
+
+<li>
+
+<hr class="my-0">
+
+</li>
+
+<li class="text-center py-2">
+
+<a
+href="{% url 'mark_all_notifications_read' %}"
+class="text-decoration-none">
+
+Mark All as Read
+
+</a>
+
+</li>
+
+{% endif %}
+</ul>
+
+</li>
+
+<li class="nav-item me-3">
+
+<div class="navbar-user">
+
+<i class="fas fa-circle-user me-2 text-primary"></i>
+
+{{ user.username }}
+
+</div>
+
+</li>
+
+<li class="nav-item">
+
+<a href="{% url 'logout' %}"
+
+class="btn btn-outline-danger">
+
+<i class="fas fa-right-from-bracket me-2"></i>
+
+Logout
+
+</a>
+
+</li>
+
+{% else %}
+
+<li class="nav-item me-2">
+
+<a href="{% url 'login' %}"
+class="btn btn-outline-primary">
+
+Login
+
+</a>
+
+</li>
+
+<li class="nav-item">
+
+<a href="{% url 'register' %}"
+class="btn btn-primary">
+
+Register
+
+</a>
+
+</li>
+
+{% endif %}
+
+</ul>
+
+</div>
+
+</div>
+
+</nav>
+
+<div class="container mt-4">
+
+{% if messages %}
+
+{% for message in messages %}
+
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm">
+
+{{ message }}
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="alert"></button>
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+</div>
+
+{% block content %}
+{% endblock %}
+
+<footer>
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-md-6">
+<h4 class="fw-bold mb-3">
+
+<i class="fas fa-graduation-cap me-2"></i>
+
+PlaceNexus
+
+</h4>
+
+<p class="footer-text mb-0">
+
+Placement Management Platform for Students, Employers and Coordinators.
+
+</p>
+
+</div>
+
+<div class="col-md-6 text-md-end mt-4 mt-md-0">
+
+<p class="footer-text mb-1">
+
+© 2026 PlaceNexus
+
+</p>
+
+<p class="footer-text mb-0">
+
+Design & Development of a Placement Management Web Application
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

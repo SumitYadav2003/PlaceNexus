@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+
+        <div>
+
+            <h1 class="fw-bold">
+
+                📅 My Interviews
+
+            </h1>
+
+            <p class="text-muted">
+
+                View all your scheduled interviews.
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'student_dashboard' %}"
+           class="btn btn-outline-primary rounded-pill">
+
+            ← Dashboard
+
+        </a>
+
+    </div>
+
+    {% for interview in interviews %}
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row">
+
+                <div class="col-md-9">
+
+                    <h4 class="fw-bold">
+
+                        {{ interview.application.placement.company }}
+
+                    </h4>
+
+                    <p class="text-muted mb-4">
+
+                        {{ interview.application.placement.role }}
+
+                    </p>
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+
+                            <strong>Date</strong><br>
+
+                            {{ interview.interview_date }}
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <strong>Time</strong><br>
+
+                            {{ interview.interview_time }}
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <strong>Mode</strong><br>
+
+                            {{ interview.get_mode_display }}
+
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <strong>Status</strong><br>
+
+                            {% if interview.status == "scheduled" %}
+
+<span class="fw-bold text-primary">
+
+🟢 Scheduled
+
+</span>
+
+{% elif interview.status == "completed" %}
+
+<span class="fw-bold text-success">
+
+✅ Completed
+
+</span>
+
+{% elif interview.status == "offer_released" %}
+
+<span class="fw-bold text-warning">
+
+🎉 Offer Released
+
+</span>
+
+{% else %}
+
+<span class="fw-bold text-danger">
+
+❌ Cancelled
+
+</span>
+
+{% endif %}
+
+                        </div>
+
+                    </div>
+
+                    {% if interview.meeting_link %}
+
+                    <hr>
+
+                    <strong>Meeting Link</strong>
+
+                    <br>
+
+                    <a href="{{ interview.meeting_link }}"
+                       target="_blank">
+
+                        {{ interview.meeting_link }}
+
+                    </a>
+
+                    {% endif %}
+
+                    {% if interview.venue %}
+
+                    <hr>
+
+                    <strong>Venue</strong>
+
+                    <br>
+
+                    {{ interview.venue }}
+
+                    {% endif %}
+
+                    {% if interview.notes %}
+
+                    <hr>
+
+                    <strong>Notes</strong>
+
+                    <br>
+
+                    {{ interview.notes }}
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="alert alert-info shadow-sm rounded-4">
+
+        <h5 class="mb-2">
+
+            No Interviews Scheduled
+
+        </h5>
+
+        <p class="mb-0">
+
+            Your placement coordinator hasn't scheduled an interview yet.
+
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

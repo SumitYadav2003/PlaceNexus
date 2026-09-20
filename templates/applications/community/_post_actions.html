@@ -1,0 +1,78 @@
+<div class="post-actions mt-4">
+
+    <div class="row text-center g-2">
+
+        <!-- Like -->
+
+        <div class="col-md-3 col-6">
+
+            <a href="{% url 'like_post' post.id %}"
+               class="btn w-100 rounded-pill {% if post.id in liked_posts %}btn-danger{% else %}btn-outline-danger{% endif %}">
+
+                <i class="fas fa-heart me-2"></i>
+
+                {{ post.likes.count }}
+
+            </a>
+
+        </div>
+
+        <!-- Comment -->
+
+        <div class="col-md-3 col-6">
+
+            <button
+                class="btn btn-outline-secondary rounded-pill w-100"
+                disabled>
+
+                <i class="fas fa-comment me-2"></i>
+
+                {{ post.comments.count }}
+
+            </button>
+
+        </div>
+
+        <!-- Save -->
+
+        <div class="col-md-3 col-6">
+
+            <a href="{% url 'save_post' post.id %}"
+               class="btn w-100 rounded-pill {% if post.id in saved_posts %}btn-warning{% else %}btn-outline-warning{% endif %}">
+
+                <i class="{% if post.id in saved_posts %}fas{% else %}far{% endif %} fa-bookmark me-2"></i>
+
+                {% if post.id in saved_posts %}
+
+                    Saved
+
+                {% else %}
+
+                    Save
+
+                {% endif %}
+
+            </a>
+
+        </div>
+
+        <!-- Share -->
+
+        <div class="col-md-3 col-6">
+
+            <button
+                type="button"
+                class="btn btn-outline-primary rounded-pill w-100"
+                onclick="sharePost('{{ request.build_absolute_uri }}')">
+
+                <i class="fas fa-share-alt me-2"></i>
+
+                Share
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

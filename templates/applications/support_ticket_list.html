@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ================= Header ================= -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h2 class="fw-bold mb-2">
+
+                        <i class="fas fa-headset text-primary me-2"></i>
+
+                        Support Tickets
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Manage and respond to student support requests.
+
+                    </p>
+
+                </div>
+
+                <a href="{% url 'coordinator_dashboard' %}"
+                   class="btn btn-outline-primary rounded-pill mt-3 mt-lg-0">
+
+                    <i class="fas fa-arrow-left me-2"></i>
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Tickets ================= -->
+
+    {% for ticket in tickets %}
+
+    <div class="card border-0 shadow rounded-4 mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+
+                <div>
+
+                    <h4 class="fw-bold mb-2">
+
+                        {{ ticket.subject }}
+
+                    </h4>
+
+                    <p class="text-muted mb-3">
+
+                        <i class="fas fa-user-graduate me-2"></i>
+
+                        {{ ticket.student.full_name }}
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    {% if ticket.status == "open" %}
+
+                        <span class="badge bg-primary rounded-pill px-3 py-2">
+
+                            🟢 Open
+
+                        </span>
+
+                    {% elif ticket.status == "in_progress" %}
+
+                        <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+
+                            🟡 In Progress
+
+                        </span>
+
+                    {% elif ticket.status == "resolved" %}
+
+                        <span class="badge bg-success rounded-pill px-3 py-2">
+
+                            ✅ Resolved
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary rounded-pill px-3 py-2">
+
+                            🔒 Closed
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="row align-items-center">
+
+                <div class="col-md-4 mb-3">
+
+                    <small class="text-muted">
+
+                        Category
+
+                    </small>
+
+                    <h6 class="fw-bold">
+
+                        {{ ticket.get_category_display }}
+
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <small class="text-muted">
+
+                        Priority
+
+                    </small>
+
+                    <h6>
+
+                        {% if ticket.priority == "high" %}
+
+                            <span class="badge bg-danger">
+
+                                High
+
+                            </span>
+
+                        {% elif ticket.priority == "medium" %}
+
+                            <span class="badge bg-warning text-dark">
+
+                                Medium
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-success">
+
+                                Low
+
+                            </span>
+
+                        {% endif %}
+
+                    </h6>
+
+                </div>
+
+                <div class="col-md-4 text-md-end">
+
+                    <a href="{% url 'ticket_detail' ticket.id %}"
+                       class="btn btn-primary rounded-pill">
+
+                        <i class="fas fa-folder-open me-2"></i>
+
+                        View Ticket
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="card border-0 shadow rounded-4">
+
+        <div class="card-body text-center py-5">
+
+            <i class="fas fa-inbox fa-4x text-muted mb-4"></i>
+
+            <h3 class="fw-bold">
+
+                No Support Tickets
+
+            </h3>
+
+            <p class="text-muted">
+
+                There are currently no support requests.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<style>
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.badge{
+
+    font-size:.82rem;
+
+    padding:.55rem .9rem;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+</style>
+
+{% endblock %}

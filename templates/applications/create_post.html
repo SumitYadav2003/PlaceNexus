@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+
+                    <h2 class="fw-bold">
+
+                        <i class="fas fa-pen-alt text-primary me-2"></i>
+
+                        Create Community Post
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Share your knowledge with the PlaceNexus community.
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <a href="{% url 'community_feed' %}"
+                       class="btn btn-outline-primary me-2 rounded-pill">
+
+                        <i class="fas fa-users me-2"></i>
+
+                        Community
+
+                    </a>
+
+                    {% if profile.role == "student" %}
+
+                        <a href="{% url 'student_dashboard' %}"
+                           class="btn btn-outline-secondary rounded-pill">
+
+                            <i class="fas fa-arrow-left me-2"></i>
+
+                            Dashboard
+
+                        </a>
+
+                    {% elif profile.role == "coordinator" %}
+
+                        <a href="{% url 'coordinator_dashboard' %}"
+                           class="btn btn-outline-secondary rounded-pill">
+
+                            <i class="fas fa-arrow-left me-2"></i>
+
+                            Dashboard
+
+                        </a>
+
+                    {% elif profile.role == "employer" %}
+
+                        <a href="{% url 'employer_dashboard' %}"
+                           class="btn btn-outline-secondary rounded-pill">
+
+                            <i class="fas fa-arrow-left me-2"></i>
+
+                            Dashboard
+
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="card border-0 shadow-lg rounded-4">
+
+                <div class="card-body p-5">
+
+                    <form
+                        method="POST"
+                        enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+
+                                <i class="fas fa-tag me-2 text-primary"></i>
+
+                                Post Type
+
+                            </label>
+
+                            {{ form.post_type }}
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+
+                                <i class="fas fa-heading me-2 text-primary"></i>
+
+                                Title
+
+                            </label>
+
+                            {{ form.title }}
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+
+                                <i class="fas fa-align-left me-2 text-primary"></i>
+
+                                Content
+
+                            </label>
+
+                            {{ form.content }}
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+
+                                <i class="fas fa-image me-2 text-primary"></i>
+
+                                Image (Optional)
+
+                            </label>
+
+                            {{ form.image }}
+
+                        </div>
+
+                        {% if profile.role == "coordinator" %}
+
+                        <div class="form-check mb-4">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="is_pinned"
+                                id="is_pinned">
+
+                            <label
+                                class="form-check-label fw-semibold"
+                                for="is_pinned">
+
+                                📌 Pin this post to the top of the Community Feed
+
+                            </label>
+
+                        </div>
+
+                        {% endif %}
+
+                        <div class="d-grid">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg rounded-pill">
+
+                                <i class="fas fa-paper-plane me-2"></i>
+
+                                Publish Post
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

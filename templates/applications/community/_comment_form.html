@@ -1,0 +1,33 @@
+<form
+    method="POST"
+    action="{% url 'add_comment' post.id %}"
+    class="mt-4">
+
+    {% csrf_token %}
+
+    <div class="input-group">
+
+        <input
+
+            type="text"
+
+            class="form-control rounded-start-pill"
+
+            name="comment"
+
+            placeholder="Write something nice..."
+
+            maxlength="500"
+
+            required>
+
+        <button
+            class="btn btn-primary rounded-end-pill">
+
+            <i class="fas fa-paper-plane"></i>
+
+        </button>
+
+    </div>
+
+</form>

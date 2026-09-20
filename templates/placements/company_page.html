@@ -1,0 +1,519 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ================= Company Hero ================= -->
+
+    <div class="card border-0 shadow rounded-4 overflow-hidden mb-5">
+
+        <div class="bg-primary text-white p-5">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <div>
+
+                    <h1 class="fw-bold mb-2">
+
+                        🏢 {{ placement.company }}
+
+                    </h1>
+
+                    <p class="mb-0">
+
+                        <i class="fas fa-map-marker-alt me-2"></i>
+
+                        {{ placement.location }}
+
+                    </p>
+
+                </div>
+
+                <a href="{% url 'browse_placements' %}"
+                   class="btn btn-light rounded-pill mt-3 mt-lg-0">
+
+                    <i class="fas fa-arrow-left me-2"></i>
+
+                    Back
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="card-body p-5">
+
+            <div class="row g-4">
+
+                <div class="col-lg-4">
+
+                    <div class="card shadow-sm border-0 rounded-4 h-100">
+
+                        <div class="card-body text-center">
+
+                            <h6 class="text-muted">
+
+                                Current Package
+
+                            </h6>
+
+                            <h2 class="fw-bold text-success">
+
+                                💰 £{{ placement.package }}k / Per Annum
+
+                            </h2>
+
+                            <hr>
+
+                            <h6 class="text-muted">
+
+                                Deadline
+
+                            </h6>
+
+                            <h5 class="text-danger">
+
+                                📅 {{ placement.deadline }}
+
+                            </h5>
+
+                            <hr>
+
+                            <h6 class="text-muted">
+
+                                Status
+
+                            </h6>
+
+                            {% if placement.status == "open" %}
+
+                                <span class="badge bg-success">
+
+                                    Open
+
+                                </span>
+
+                            {% elif placement.status == "closed" %}
+
+                                <span class="badge bg-danger">
+
+                                    Closed
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ placement.status|title }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-8">
+
+                    <h3 class="fw-bold">
+
+                        About Company
+
+                    </h3>
+
+                    <p class="text-muted">
+
+                        {{ placement.company_about|default:"No company description available." }}
+
+                    </p>
+
+                    <hr>
+
+                    <h4 class="fw-bold">
+
+                        Eligibility
+
+                    </h4>
+
+                    <p>
+
+                        {{ placement.eligibility|default:"Not specified." }}
+
+                    </p>
+
+                    <hr>
+
+                    <h4 class="fw-bold">
+
+                        Company Website
+
+                    </h4>
+
+                    {% if placement.company_website %}
+
+                        <a
+                            href="{{ placement.company_website }}"
+                            target="_blank"
+                            class="btn btn-outline-primary rounded-pill">
+
+                            <i class="fas fa-globe me-2"></i>
+
+                            Visit Website
+
+                        </a>
+
+                    {% else %}
+
+                        <p class="text-muted">
+
+                            Website not available.
+
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Open Positions ================= -->
+
+    <h2 class="fw-bold mb-4">
+
+        <i class="fas fa-briefcase text-primary me-2"></i>
+
+        Open Positions
+
+    </h2>
+
+    <div class="row">
+
+    {% for job in company_placements %}
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold">
+
+                        {{ job.role }}
+
+                    </h4>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-6">
+
+                            <small class="text-muted">
+
+                                Package
+
+                            </small>
+
+                            <h6>
+
+                                💰 £{{ job.package }}k / Per Annum
+
+                            </h6>
+
+                        </div>
+
+                        <div class="col-6">
+
+                            <small class="text-muted">
+
+                                Deadline
+
+                            </small>
+
+                            <h6 class="text-danger">
+
+                                📅 {{ job.deadline }}
+
+                            </h6>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                                        <div class="d-grid gap-2 mt-4">
+
+                        {% if job.id in applied_ids %}
+
+                            <button
+                                class="btn btn-success rounded-pill"
+                                disabled>
+
+                                <i class="fas fa-check-circle me-2"></i>
+
+                                Already Applied
+
+                            </button>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'apply_placement' job.id %}"
+                                class="btn btn-primary rounded-pill">
+
+                                <i class="fas fa-paper-plane me-2"></i>
+
+                                Apply Now
+
+                            </a>
+
+                        {% endif %}
+
+                        {% if job.id in saved_ids %}
+
+                            <a
+                                href="{% url 'remove_saved_placement' job.id %}"
+                                class="btn btn-outline-danger rounded-pill">
+
+                                <i class="fas fa-heart me-2"></i>
+
+                                Saved Placement
+
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'save_placement' job.id %}"
+                                class="btn btn-outline-secondary rounded-pill">
+
+                                <i class="far fa-heart me-2"></i>
+
+                                Save Placement
+
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="col-12">
+
+            <div class="alert alert-info rounded-4">
+
+                No active openings available.
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+    </div>
+
+    <!-- ================= Reviews ================= -->
+
+    <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+
+        <h2 class="fw-bold">
+
+            ⭐ Student Reviews
+
+        </h2>
+
+        <a
+            href="{% url 'company_review' placement.id %}"
+            class="btn btn-primary rounded-pill">
+
+            <i class="fas fa-pen me-2"></i>
+
+            Write Review
+
+        </a>
+
+    </div>
+
+    {% for review in reviews %}
+
+    <div class="card border-0 shadow rounded-4 mb-4">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+
+                        {{ review.student.full_name }}
+
+                    </h5>
+
+                    <small class="text-muted">
+
+                        Student Review
+
+                    </small>
+
+                </div>
+
+                <span class="badge bg-warning text-dark">
+
+                    ⭐ {{ review.rating }}/5
+
+                </span>
+
+            </div>
+
+            <hr>
+
+            <div class="row text-center">
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+
+                        OA Difficulty
+
+                    </small>
+
+                    <h5>
+
+                        {{ review.oa_difficulty }}/5
+
+                    </h5>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+
+                        Interview
+
+                    </small>
+
+                    <h5>
+
+                        {{ review.interview_difficulty }}/5
+
+                    </h5>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+
+                        Salary
+
+                    </small>
+
+                    <h5>
+
+                        £{{ review.salary }}k / Per Annum
+
+                    </h5>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <p class="mb-0">
+
+                {{ review.experience }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="card border-0 shadow rounded-4">
+
+        <div class="card-body text-center py-5">
+
+            <i class="fas fa-star fa-3x text-warning mb-3"></i>
+
+            <h4>
+
+                No Reviews Yet
+
+            </h4>
+
+            <p class="text-muted">
+
+                Be the first student to review this company.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<style>
+
+.card{
+
+    transition:.25s ease;
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.btn{
+
+    transition:.25s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.badge{
+
+    font-size:.82rem;
+
+    padding:.55rem .85rem;
+
+}
+
+</style>
+
+{% endblock %}

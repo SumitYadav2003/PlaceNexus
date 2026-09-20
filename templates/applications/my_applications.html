@@ -1,0 +1,560 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+
+        <div>
+
+<h1 class="fw-bold display-6">
+
+    <i class="fas fa-route text-primary me-2"></i>
+
+    My Placement Journey
+
+</h1>
+
+<div class="mt-3">
+
+    <span class="badge bg-primary rounded-pill px-3 py-2 me-2">
+
+        {{ applications.count }} Applications
+
+    </span>
+
+    <span class="badge bg-success rounded-pill px-3 py-2">
+
+        Track every stage of your recruitment
+
+    </span>
+
+</div>
+
+            <p class="text-muted mb-0">
+
+                Track your recruitment progress from application to final offer.
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'student_dashboard' %}"
+           class="btn btn-outline-primary">
+
+            <i class="fas fa-arrow-left me-2"></i>
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+    {% for application in applications %}
+
+    <div class="card shadow border-0 rounded-4 mb-5 journey-card">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+
+                <div>
+
+                    <h2 class="fw-bold text-primary mb-1">
+
+                        <i class="fas fa-building me-2"></i>
+
+                        {{ application.placement.company }}
+
+                    </h2>
+
+                    <h5 class="text-muted">
+
+                        {{ application.placement.role }}
+
+                    </h5>
+
+                    <div class="mt-3">
+
+    <span class="badge bg-light text-dark me-2">
+
+        📍 {{ application.placement.location }}
+
+    </span>
+
+    <span class="badge bg-light text-dark">
+
+        💰 £{{ application.placement.package }}k / Per Annum
+
+    </span>
+
+</div>
+
+                </div>
+
+                <div>
+
+{% if application.status == "offer_accepted" %}
+
+<span class="badge bg-success fs-6 px-3 py-2">
+
+{% elif application.status == "offer_released" %}
+
+<span class="badge bg-success fs-6 px-3 py-2">
+
+{% elif application.status == "interview_completed" %}
+
+<span class="badge bg-info fs-6 px-3 py-2">
+
+{% elif application.status == "interview_scheduled" %}
+
+<span class="badge bg-primary fs-6 px-3 py-2">
+
+{% elif application.status == "shortlisted" %}
+
+<span class="badge bg-warning text-dark fs-6 px-3 py-2">
+
+{% elif application.status == "resume_reviewed" %}
+
+<span class="badge bg-secondary fs-6 px-3 py-2">
+
+{% elif application.status == "rejected" %}
+
+<span class="badge bg-danger fs-6 px-3 py-2">
+
+{% else %}
+
+<span class="badge bg-dark fs-6 px-3 py-2">
+
+{% endif %}
+
+{{ application.get_status_display }}
+
+</span>
+
+                </div>
+
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row text-center">
+
+                <div class="col-md-4 mb-3">
+
+                    <i class="fas fa-money-bill-wave fa-2x text-success mb-2"></i>
+
+                    <h6 class="fw-bold">
+
+                        Package
+
+                    </h6>
+
+                    £{{ application.placement.package }}k / Per Annum
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <i class="fas fa-location-dot fa-2x text-danger mb-2"></i>
+
+                    <h6 class="fw-bold">
+
+                        Location
+
+                    </h6>
+
+                    {{ application.placement.location }}
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <i class="fas fa-calendar-days fa-2x text-primary mb-2"></i>
+
+                    <h6 class="fw-bold">
+
+                        Applied On
+
+                    </h6>
+
+                    {{ application.applied_at|date:"d M Y" }}
+
+                </div>
+
+            </div>
+
+            <hr class="my-4">
+
+            <h4 class="fw-bold mb-4">
+
+                <i class="fas fa-chart-line text-primary me-2"></i>
+
+                Recruitment Progress
+
+            </h4>
+
+            <p class="text-muted mb-4">
+
+Follow every stage of your recruitment process until the final hiring decision.
+
+</p>
+
+            {% with status=application.status %}
+
+            <div class="mb-5">
+
+{% if status == "offer_accepted" %}
+
+    <div class="progress" style="height:12px;">
+
+        <div class="progress-bar bg-success"
+             style="width:100%;"></div>
+
+    </div>
+
+{% elif status == "offer_released" %}
+
+    <div class="progress" style="height:12px;">
+
+        <div class="progress-bar bg-success"
+             style="width:90%;"></div>
+
+    </div>
+
+{% elif status == "interview_completed" %}
+
+    <div class="progress" style="height:12px;">
+
+        <div class="progress-bar bg-info"
+             style="width:75%;">
+
+    75%;"></div>
+
+    </div>
+
+{% elif status == "interview_scheduled" %}
+
+    <div class="progress" style="height:12px;">
+
+        <div class="progress-bar bg-primary"
+             style="width:60%;"></div>
+
+    </div>
+
+{% elif status == "shortlisted" %}
+
+    <div class="progress" style="height:12px;">
+
+        <div class="progress-bar bg-warning"
+             style="width:45%;"></div>
+
+    </div>
+
+{% elif status == "resume_reviewed" %}
+
+    <div class="progress" style="height:12px;">
+
+        <div class="progress-bar bg-secondary"
+             style="width:30%;"></div>
+
+    </div>
+
+{% else %}
+
+    <div class="progress" style="height:12px;">
+
+        <div class="progress-bar bg-dark"
+             style="width:15%;"></div>
+
+    </div>
+
+{% endif %}
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<div class="mb-3">
+
+<div class="text-success fw-bold">
+
+<i class="fas fa-paper-plane me-2"></i>
+
+Applied
+
+</div>
+
+</div>
+
+<div class="mb-3">
+
+{% if status == "resume_reviewed" or status == "shortlisted" or status == "interview_scheduled" or status == "interview_completed" or status == "offer_released" or status == "offer_accepted" %}
+
+<div class="text-success fw-bold">
+
+<i class="fas fa-file-lines me-2"></i>
+
+Resume Reviewed
+
+</div>
+
+{% else %}
+
+<div class="text-secondary">
+
+<i class="far fa-circle me-2"></i>
+
+Resume Reviewed
+
+</div>
+
+{% endif %}
+
+</div>
+
+<div class="mb-3">
+
+{% if status == "shortlisted" or status == "interview_scheduled" or status == "interview_completed" or status == "offer_released" or status == "offer_accepted" %}
+
+<div class="text-success fw-bold">
+
+<i class="fas fa-star me-2"></i>
+
+Shortlisted
+
+</div>
+
+{% else %}
+
+<div class="text-secondary">
+
+<i class="far fa-circle me-2"></i>
+
+Shortlisted
+
+</div>
+
+{% endif %}
+
+</div>
+
+<div class="mb-3">
+
+{% if status == "interview_scheduled" or status == "interview_completed" or status == "offer_released" or status == "offer_accepted" %}
+
+<div class="text-success fw-bold">
+
+<i class="fas fa-calendar-check me-2"></i>
+
+Interview Scheduled
+
+</div>
+
+{% else %}
+
+<div class="text-secondary">
+
+<i class="far fa-circle me-2"></i>
+
+Interview Scheduled
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+    <div class="mb-3">
+
+{% if status == "interview_completed" or status == "offer_released" or status == "offer_accepted" %}
+
+<div class="text-success fw-bold">
+
+<i class="fas fa-user-check me-2"></i>
+
+Interview Completed
+
+</div>
+
+{% else %}
+
+<div class="text-secondary">
+
+<i class="far fa-circle me-2"></i>
+
+Interview Completed
+
+</div>
+
+{% endif %}
+
+</div>
+
+<div class="mb-3">
+
+{% if status == "offer_released" or status == "offer_accepted" %}
+
+<div class="text-success fw-bold">
+
+<i class="fas fa-gift me-2"></i>
+
+Offer Released
+
+</div>
+
+{% else %}
+
+<div class="text-secondary">
+
+<i class="far fa-circle me-2"></i>
+
+Offer Released
+
+</div>
+
+{% endif %}
+
+</div>
+
+<div class="mb-3">
+
+{% if status == "offer_accepted" %}
+
+<div class="text-success fw-bold">
+
+<i class="fas fa-circle-check me-2"></i>
+
+Offer Accepted
+
+</div>
+
+{% else %}
+
+<div class="text-secondary">
+
+<i class="far fa-circle me-2"></i>
+
+Offer Accepted
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+{% if status == "rejected" %}
+
+<div class="alert alert-danger mt-4 border-0 rounded-4">
+
+<h5 class="fw-bold">
+
+<i class="fas fa-circle-xmark me-2"></i>
+
+Application Closed
+
+</h5>
+
+<p class="mb-0">
+
+This application has been closed.
+
+Keep applying to new opportunities—every interview builds experience and brings you closer to the right role.
+
+</p>
+
+</div>
+
+{% endif %}
+
+{% endwith %}
+
+</div>
+
+</div>
+
+    {% empty %}
+
+    <div class="card shadow border-0 rounded-4">
+
+        <div class="card-body text-center p-5">
+
+            <i class="fas fa-briefcase fa-4x text-muted mb-4"></i>
+
+            <h3 class="fw-bold">
+
+                No Applications Yet
+
+            </h3>
+
+            <p class="text-muted">
+
+                Start applying for placements to begin your recruitment journey.
+
+            </p>
+
+            <a href="{% url 'browse_placements' %}"
+               class="btn btn-primary rounded-pill px-4">
+
+                <i class="fas fa-search me-2"></i>
+
+                Browse Placements
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<style>
+
+.journey-card{
+
+    transition:all .3s ease;
+
+}
+
+.journey-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.progress{
+
+    border-radius:20px;
+
+}
+
+.progress-bar{
+
+    border-radius:20px;
+
+}
+
+.badge{
+
+    border-radius:50px;
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+
+                        <i class="fas fa-shield-alt fa-4x text-primary mb-3"></i>
+
+                        <h2 class="fw-bold">
+
+                            Two-Factor Authentication
+
+                        </h2>
+
+                        <p class="text-muted">
+
+                            Enter the 6-digit OTP sent to your email.
+
+                        </p>
+
+                    </div>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <input
+
+                            type="text"
+
+                            name="otp"
+
+                            maxlength="6"
+
+                            class="form-control form-control-lg text-center mb-4"
+
+                            placeholder="Enter OTP"
+
+                            required>
+
+                        <button
+
+                            class="btn btn-primary w-100 rounded-pill">
+
+                            Verify OTP
+
+                        </button>
+
+                    </form>
+
+                    <div class="text-center mt-4">
+
+                        <p class="text-muted mb-2">
+
+                            OTP expires in
+
+                        </p>
+
+                        <h4 id="timer"
+
+                            class="fw-bold text-danger">
+
+                            05:00
+
+                        </h4>
+
+                    </div>
+
+                    <div class="text-center mt-4">
+
+                        <a
+
+                            id="resendBtn"
+
+                            href="{% url 'resend_otp' %}"
+
+                            class="btn btn-outline-primary rounded-pill disabled">
+
+                            Resend OTP
+
+                        </a>
+
+                    </div>
+
+                    <div class="text-center mt-4">
+
+                        <a
+
+                            href="{% url 'login' %}">
+
+                            Back to Login
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let time={{ remaining }};
+
+const timer=document.getElementById("timer");
+
+const resend=document.getElementById("resendBtn");
+
+function updateTimer(){
+
+    const minutes=Math.floor(time/60);
+
+    const seconds=time%60;
+
+    timer.innerHTML=
+
+        String(minutes).padStart(2,"0")
+
+        +":"
+
+        +
+
+        String(seconds).padStart(2,"0");
+
+    if(time<=0){
+
+        resend.classList.remove("disabled");
+
+        timer.innerHTML="Expired";
+
+        return;
+
+    }
+
+    time--;
+
+    setTimeout(updateTimer,1000);
+
+}
+
+updateTimer();
+
+</script>
+
+{% endblock %}

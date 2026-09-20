@@ -1,0 +1,200 @@
+<div class="card border-0 shadow rounded-4 h-100 overflow-hidden">
+
+    {% if post.image %}
+
+        <img
+            src="{{ post.image.url }}"
+            class="card-img-top"
+            style="height:220px;object-fit:cover;">
+
+    {% else %}
+
+        <div
+            class="d-flex flex-column justify-content-center align-items-center"
+            style="height:220px;background:#eaf3ff;">
+
+            {% if post.post_type == "achievement" %}
+
+                <i class="fas fa-trophy fa-4x text-success mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Achievement
+
+                </h5>
+
+            {% elif post.post_type == "career_question" %}
+
+                <i class="fas fa-comments fa-4x text-primary mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Career Question
+
+                </h5>
+
+            {% elif post.post_type == "career_tip" %}
+
+                <i class="fas fa-lightbulb fa-4x text-warning mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Career Tip
+
+                </h5>
+
+            {% elif post.post_type == "interview_experience" %}
+
+                <i class="fas fa-briefcase fa-4x text-info mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Interview Experience
+
+                </h5>
+
+            {% elif post.post_type == "placement_drive" %}
+
+                <i class="fas fa-rocket fa-4x text-danger mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Placement Drive
+
+                </h5>
+
+            {% elif post.post_type == "announcement" %}
+
+                <i class="fas fa-bullhorn fa-4x text-dark mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Announcement
+
+                </h5>
+
+            {% elif post.post_type == "deadline" %}
+
+                <i class="fas fa-clock fa-4x text-danger mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Deadline
+
+                </h5>
+
+            {% elif post.post_type == "preparation_tip" %}
+
+                <i class="fas fa-book-open fa-4x text-secondary mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Preparation Tip
+
+                </h5>
+
+            {% elif post.post_type == "internship" %}
+
+                <i class="fas fa-graduation-cap fa-4x text-primary mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Internship
+
+                </h5>
+
+            {% elif post.post_type == "company_update" %}
+
+                <i class="fas fa-building fa-4x text-info mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Company Update
+
+                </h5>
+
+            {% elif post.post_type == "recruitment_tip" %}
+
+                <i class="fas fa-chart-line fa-4x text-warning mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Recruitment Tip
+
+                </h5>
+
+            {% else %}
+
+                <i class="fas fa-users fa-4x text-primary mb-3"></i>
+
+                <h5 class="fw-bold">
+
+                    Community Discussion
+
+                </h5>
+
+            {% endif %}
+
+            <small class="text-muted">
+
+                Text-only community post
+
+            </small>
+
+        </div>
+
+    {% endif %}
+
+    <div class="card-body d-flex flex-column">
+
+        <span class="badge bg-primary align-self-start mb-3">
+
+            {{ post.get_post_type_display }}
+
+        </span>
+
+        <h4 class="fw-bold">
+
+            {{ post.title|truncatechars:45 }}
+
+        </h4>
+
+        <p class="text-muted flex-grow-1">
+
+            {{ post.content|truncatechars:120 }}
+
+        </p>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+
+            <div>
+
+                <strong>
+
+                    {{ post.author.full_name|default:post.author.user.username }}
+
+                </strong>
+
+                <br>
+
+                <small class="text-muted">
+
+                    {{ post.created_at|date:"d M Y" }}
+
+                </small>
+
+            </div>
+
+            <a
+                href="{% url 'community_post_detail' post.id %}"
+                class="btn btn-primary rounded-pill">
+
+                Read More
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

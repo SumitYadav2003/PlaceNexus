@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-10">
+
+<div class="card shadow border-0 rounded-4">
+
+<div class="card-body p-5">
+
+<h2 class="fw-bold mb-2">
+
+Employer Public Profile
+
+</h2>
+
+<p class="text-muted mb-5">
+
+Complete your company profile that students will be able to view.
+
+</p>
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Company Name
+
+</label>
+
+{{ form.company_name }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Industry
+
+</label>
+
+{{ form.industry }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Company Size
+
+</label>
+
+{{ form.company_size }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Founded Year
+
+</label>
+
+{{ form.founded_year }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Headquarters
+
+</label>
+
+{{ form.headquarters }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Website
+
+</label>
+
+{{ form.website }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+LinkedIn
+
+</label>
+
+{{ form.linkedin }}
+
+</div>
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label fw-bold">
+
+Company Logo
+
+</label>
+
+{{ form.company_logo }}
+
+</div>
+
+<div class="col-12 mb-4">
+
+<label class="form-label fw-bold">
+
+Company Banner
+
+</label>
+
+{{ form.company_banner }}
+
+</div>
+
+<div class="col-12 mb-4">
+
+<label class="form-label fw-bold">
+
+About Company
+
+</label>
+
+{{ form.description }}
+
+</div>
+
+</div>
+
+<hr class="my-4">
+
+<div class="d-flex justify-content-between">
+
+<a
+href="{% url 'employer_dashboard' %}"
+class="btn btn-outline-secondary rounded-pill px-4">
+
+Back
+
+</a>
+
+<button
+type="submit"
+class="btn btn-primary rounded-pill px-5">
+
+<i class="fas fa-save me-2"></i>
+
+Save Profile
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

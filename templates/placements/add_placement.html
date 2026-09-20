@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow">
+
+                <div class="card-body p-5">
+
+                    <h2 class="text-center mb-4">
+                        Add Placement
+                    </h2>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Company
+                            </label>
+                            {{ form.company }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Role
+                            </label>
+                            {{ form.role }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Package (£k / Per Annum)
+                            </label>
+                            {{ form.package }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Location
+                            </label>
+                            {{ form.location }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Deadline
+                            </label>
+                            {{ form.deadline }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Description
+                            </label>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="mb-3">
+
+    <label class="form-label fw-bold">
+
+        About Company
+
+    </label>
+
+    {{ form.company_about }}
+
+</div>
+
+<div class="mb-3">
+
+    <label class="form-label fw-bold">
+
+        Company Website
+
+    </label>
+
+    {{ form.company_website }}
+
+</div>
+
+<div class="mb-3">
+
+    <label class="form-label fw-bold">
+
+        Eligibility Criteria
+
+    </label>
+
+    {{ form.eligibility }}
+
+</div>
+
+                        <div class="mb-4">
+                            <label class="form-label">
+                                Status
+                            </label>
+                            {{ form.status }}
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100">
+
+                            Add Placement
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

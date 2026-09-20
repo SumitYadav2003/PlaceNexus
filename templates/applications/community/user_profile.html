@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ================= Header ================= -->
+
+    <div class="card border-0 shadow rounded-4 mb-5">
+
+        <div class="card-body p-5">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-2 text-center">
+
+                    {% if viewed_profile.profile_photo %}
+
+                        <img
+                            src="{{ viewed_profile.profile_photo.url }}"
+                            class="rounded-circle shadow"
+                            style="width:140px;height:140px;object-fit:cover;">
+
+                    {% else %}
+
+                        <div
+                            class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center mx-auto shadow"
+                            style="width:140px;height:140px;font-size:55px;">
+
+                            {{ viewed_profile.user.username|first|upper }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <h2 class="fw-bold mb-2">
+
+                        {% if viewed_profile.full_name %}
+
+                            {{ viewed_profile.full_name }}
+
+                        {% else %}
+
+                            {{ viewed_profile.user.username }}
+
+                        {% endif %}
+
+                    </h2>
+
+                    <span class="badge bg-primary rounded-pill px-3 py-2">
+
+                        {{ viewed_profile.get_role_display }}
+
+                    </span>
+
+                    {% if viewed_profile.bio %}
+
+                    <p class="text-muted mt-3 mb-0">
+
+                        {{ viewed_profile.bio }}
+
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="row text-center">
+
+                        <div class="col-6">
+
+                            <h2 class="fw-bold text-primary">
+
+                                {{ total_posts }}
+
+                            </h2>
+
+                            <small class="text-muted">
+
+                                Posts
+
+                            </small>
+
+                        </div>
+
+                        <div class="col-6">
+
+                            <h2 class="fw-bold text-danger">
+
+                                {{ total_likes }}
+
+                            </h2>
+
+                            <small class="text-muted">
+
+                                Likes
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Details ================= -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow rounded-4 h-100">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-4">
+
+                        Profile Details
+
+                    </h5>
+
+                    <p>
+
+                        <strong>Email:</strong><br>
+
+                        {{ viewed_profile.user.email }}
+
+                    </p>
+
+                    {% if viewed_profile.phone %}
+
+                    <p>
+
+                        <strong>Phone:</strong><br>
+
+                        {{ viewed_profile.phone }}
+
+                    </p>
+
+                    {% endif %}
+
+                    {% if viewed_profile.college %}
+
+                    <p>
+
+                        <strong>College:</strong><br>
+
+                        {{ viewed_profile.college }}
+
+                    </p>
+
+                    {% endif %}
+
+                    {% if viewed_profile.branch %}
+
+                    <p>
+
+                        <strong>Branch:</strong><br>
+
+                        {{ viewed_profile.branch }}
+
+                    </p>
+
+                    {% endif %}
+
+                    {% if viewed_profile.skills %}
+
+                    <p>
+
+                        <strong>Skills:</strong><br>
+
+                        {{ viewed_profile.skills }}
+
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <h4 class="fw-bold mb-0">
+
+                            Community Posts
+
+                        </h4>
+
+                        <a
+                            href="{% url 'community_feed' %}"
+                            class="btn btn-outline-primary rounded-pill">
+
+                            Community Feed
+
+                        </a>
+
+                    </div>
+
+                    <div class="row">
+
+                        {% for post in posts %}
+
+                            <div class="col-lg-6 mb-4">
+
+                                {% include "applications/community/_dashboard_post_card.html" %}
+
+                            </div>
+
+                        {% empty %}
+
+                            <div class="col-12">
+
+                                <div class="alert alert-light rounded-4">
+
+                                    No community posts yet.
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

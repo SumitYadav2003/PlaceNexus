@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Hero -->
+
+    <div class="card border-0 shadow-lg rounded-4 mb-5">
+
+        <div class="card-body p-5">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <h1 class="fw-bold">
+
+                        Create Placement Request
+
+                    </h1>
+
+                    <p class="text-muted fs-5 mb-0">
+
+                        Submit a hiring request. Your department coordinator
+                        will review and approve it before students can view
+                        the placement.
+
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-center">
+
+                    <i class="fas fa-file-signature fa-6x text-primary"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card border-0 shadow rounded-4">
+
+        <div class="card-body p-5">
+
+            {% if editing %}
+
+<div class="alert alert-warning rounded-4 mb-4">
+
+<i class="fas fa-edit me-2"></i>
+
+Coordinator requested modifications.
+
+Please update your placement request and resubmit it.
+
+</div>
+
+{% endif %}
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Company
+
+                        </label>
+
+                        {{ form.company }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Job Role
+
+                        </label>
+
+                        {{ form.role }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Department
+
+                        </label>
+
+                        {{ form.department }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Package (£k / Per Annum)
+
+                        </label>
+
+                        {{ form.package }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Location
+
+                        </label>
+
+                        {{ form.location }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Openings
+
+                        </label>
+
+                        {{ form.openings }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Deadline
+
+                        </label>
+
+                        {{ form.deadline }}
+
+                    </div>
+
+                    <div class="col-12 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Required Skills
+
+                        </label>
+
+                        {{ form.required_skills }}
+
+                    </div>
+
+                    <div class="col-12 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Eligibility
+
+                        </label>
+
+                        {{ form.eligibility }}
+
+                    </div>
+
+                    <div class="col-12 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Job Description
+
+                        </label>
+
+                        {{ form.description }}
+
+                    </div>
+
+                    <div class="col-12 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            About Company
+
+                        </label>
+
+                        {{ form.company_about }}
+
+                    </div>
+
+                    <div class="col-12 mb-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Company Website
+
+                        </label>
+
+                        {{ form.company_website }}
+
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-end gap-3">
+
+                    <a
+                        href="{% url 'employer_dashboard' %}"
+                        class="btn btn-outline-secondary rounded-pill px-4">
+
+                        Cancel
+
+                    </a>
+
+                    <button
+                        class="btn btn-primary rounded-pill px-5">
+
+                        <i class="fas fa-paper-plane me-2"></i>
+
+                        {% if editing %}
+
+Resubmit Request
+
+{% else %}
+
+Submit Request
+
+{% endif %}
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

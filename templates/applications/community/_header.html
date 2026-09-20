@@ -1,0 +1,299 @@
+<!-- ================= Community Header ================= -->
+
+<div class="card border-0 shadow rounded-4 mb-4">
+
+    <div class="card-body p-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-7">
+
+                <h2 class="fw-bold mb-2">
+
+                    <i class="fas fa-users text-primary me-2"></i>
+
+                    PlaceNexus Community
+
+                </h2>
+
+                <p class="text-muted mb-0">
+
+                    Connect, learn and grow with students, coordinators and employers.
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-5 text-lg-end mt-3 mt-lg-0">
+
+                <a href="{% url 'create_post' %}"
+                   class="btn btn-primary rounded-pill me-2 mb-2">
+
+                    <i class="fas fa-plus me-2"></i>
+
+                    Create Post
+
+                </a>
+
+                <a href="{% url 'my_posts' %}"
+                   class="btn btn-outline-success rounded-pill me-2 mb-2">
+
+                    <i class="fas fa-user-edit me-2"></i>
+
+                    My Posts
+
+                </a>
+
+                <a href="{% url 'saved_posts' %}"
+                   class="btn btn-warning rounded-pill me-2 mb-2">
+
+                    <i class="fas fa-bookmark me-2"></i>
+
+                    Saved
+
+                </a>
+
+                {% if profile.role == "student" %}
+
+                    <a href="{% url 'student_dashboard' %}"
+                       class="btn btn-outline-primary rounded-pill mb-2">
+
+                        Dashboard
+
+                    </a>
+
+                {% elif profile.role == "coordinator" %}
+
+                    <a href="{% url 'coordinator_dashboard' %}"
+                       class="btn btn-outline-primary rounded-pill mb-2">
+
+                        Dashboard
+
+                    </a>
+
+                {% elif profile.role == "employer" %}
+
+                    <a href="{% url 'employer_dashboard' %}"
+                       class="btn btn-outline-primary rounded-pill mb-2">
+
+                        Dashboard
+
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= Statistics ================= -->
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-3">
+
+        <div class="card community-stat shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h3 class="fw-bold text-primary">
+
+                    {{ student_count }}
+
+                </h3>
+
+                <small class="text-muted">
+
+                    Students
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card community-stat shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h3 class="fw-bold text-success">
+
+                    {{ employer_count }}
+
+                </h3>
+
+                <small class="text-muted">
+
+                    Employers
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card community-stat shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h3 class="fw-bold text-warning">
+
+                    {{ coordinator_count }}
+
+                </h3>
+
+                <small class="text-muted">
+
+                    Coordinators
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card community-stat shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h3 class="fw-bold text-danger">
+
+                    {{ post_count }}
+
+                </h3>
+
+                <small class="text-muted">
+
+                    Posts
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= Search ================= -->
+
+<form method="GET" class="card border-0 shadow rounded-4 mb-5">
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            <div class="col-lg-4">
+
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ query }}"
+                    class="form-control"
+                    placeholder="Search posts...">
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <select
+                    name="role"
+                    class="form-select">
+
+                    <option value="">All Roles</option>
+
+                    <option value="student" {% if role == "student" %}selected{% endif %}>Student</option>
+
+                    <option value="coordinator" {% if role == "coordinator" %}selected{% endif %}>Coordinator</option>
+
+                    <option value="employer" {% if role == "employer" %}selected{% endif %}>Employer</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <select
+                    name="post_type"
+                    class="form-select">
+
+                    <option value="">All Post Types</option>
+
+                    <option value="achievement" {% if post_type == "achievement" %}selected{% endif %}>🏆 Achievement</option>
+
+                    <option value="interview" {% if post_type == "interview" %}selected{% endif %}>💼 Interview</option>
+
+                    <option value="career_question" {% if post_type == "career_question" %}selected{% endif %}>❓ Career Question</option>
+
+                    <option value="career_tip" {% if post_type == "career_tip" %}selected{% endif %}>💡 Career Tip</option>
+
+                    <option value="placement_drive" {% if post_type == "placement_drive" %}selected{% endif %}>🚀 Placement Drive</option>
+
+                    <option value="announcement" {% if post_type == "announcement" %}selected{% endif %}>📢 Announcement</option>
+
+                    <option value="deadline" {% if post_type == "deadline" %}selected{% endif %}>⏰ Deadline</option>
+
+                    <option value="preparation_tip" {% if post_type == "preparation_tip" %}selected{% endif %}>📚 Preparation Tip</option>
+
+                    <option value="hiring" {% if post_type == "hiring" %}selected{% endif %}>💼 Hiring</option>
+
+                    <option value="internship" {% if post_type == "internship" %}selected{% endif %}>🎯 Internship</option>
+
+                    <option value="company_update" {% if post_type == "company_update" %}selected{% endif %}>🏢 Company Update</option>
+
+                    <option value="recruitment_tip" {% if post_type == "recruitment_tip" %}selected{% endif %}>📈 Recruitment Tip</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-2 d-grid">
+
+                <button
+                    class="btn btn-primary">
+
+                    <i class="fas fa-search me-2"></i>
+
+                    Search
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="text-end mt-3">
+
+            <a
+                href="{% url 'community_feed' %}"
+                class="btn btn-outline-secondary rounded-pill">
+
+                <i class="fas fa-rotate-left me-2"></i>
+
+                Clear Filters
+
+            </a>
+
+        </div>
+
+    </div>
+
+</form>

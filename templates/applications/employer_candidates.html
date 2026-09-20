@@ -1,0 +1,486 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="d-flex justify-content-between align-items-center mb-5">
+
+<div>
+
+<h2 class="fw-bold">
+
+Employer Candidate Dashboard
+
+</h2>
+
+<p class="text-muted mb-0">
+
+View and manage applicants for your placements.
+
+</p>
+
+</div>
+
+<a href="{% url 'employer_dashboard' %}"
+class="btn btn-outline-primary rounded-pill">
+
+<i class="fas fa-arrow-left me-2"></i>
+
+Dashboard
+
+</a>
+
+</div>
+
+<div class="row mb-4">
+
+<div class="col-md-3">
+
+<div class="card shadow border-0 text-center">
+
+<div class="card-body">
+
+<h3 class="fw-bold">
+
+{{ total_candidates }}
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Applicants
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow border-0 text-center">
+
+<div class="card-body">
+
+<h3 class="fw-bold text-primary">
+
+{{ shortlisted }}
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Shortlisted
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow border-0 text-center">
+
+<div class="card-body">
+
+<h3 class="fw-bold text-warning">
+
+{{ interviews }}
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Interviews
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow border-0 text-center">
+
+<div class="card-body">
+
+<h3 class="fw-bold text-success">
+
+{{ selected }}
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Selected
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<form method="GET" class="card shadow border-0 mb-4">
+
+<div class="card-body">
+
+<div class="row">
+
+<div class="col-md-5">
+
+<select
+name="placement"
+class="form-select">
+
+<option value="">
+
+All Placements
+
+</option>
+
+{% for placement in placements %}
+
+<option
+value="{{ placement.id }}"
+{% if placement_filter == placement.id|stringformat:"s" %}
+selected
+{% endif %}>
+
+{{ placement.company }} - {{ placement.role }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-5">
+
+<select
+name="status"
+class="form-select">
+
+<option value="">
+
+All Status
+
+</option>
+
+<option value="pending">Pending</option>
+
+<option value="resume_reviewed">Resume Reviewed</option>
+
+<option value="shortlisted">Shortlisted</option>
+
+<option value="interview_scheduled">Interview Scheduled</option>
+
+<option value="interview_completed">Interview Completed</option>
+
+<option value="offer_released">Offer Released</option>
+
+<option value="offer_accepted">Offer Accepted</option>
+
+<option value="rejected">Rejected</option>
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<button
+type="submit"
+class="btn btn-primary w-100">
+
+Filter
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</form>
+<div class="card shadow border-0">
+
+<div class="card-body p-0">
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle mb-0">
+
+<thead class="table-light">
+
+<tr>
+
+<th>Candidate</th>
+
+<th>Placement</th>
+
+<th>CGPA</th>
+
+<th>Status</th>
+
+<th>Resume</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for application in applications %}
+
+<tr>
+
+<td>
+
+<div class="d-flex align-items-center">
+
+<div>
+
+<h6 class="fw-bold mb-0">
+
+{{ application.student.full_name|default:application.student.user.get_full_name|default:application.student.user.username }}
+
+</h6>
+
+<small class="text-muted">
+
+{{ application.student.department }}
+
+</small>
+
+</div>
+
+</div>
+
+</td>
+
+<td>
+
+<strong>
+
+{{ application.placement.company }}
+
+</strong>
+
+<br>
+
+<small class="text-muted">
+
+{{ application.placement.role }}
+
+</small>
+
+</td>
+
+<td>
+
+{% if application.student.cgpa %}
+
+{{ application.student.cgpa }}
+
+{% else %}
+
+-
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if application.status == "pending" %}
+
+<span class="badge bg-secondary">
+
+Pending
+
+</span>
+
+{% elif application.status == "resume_reviewed" %}
+
+<span class="badge bg-info">
+
+Resume Reviewed
+
+</span>
+
+{% elif application.status == "shortlisted" %}
+
+<span class="badge bg-primary">
+
+Shortlisted
+
+</span>
+
+{% elif application.status == "interview_scheduled" %}
+
+<span class="badge bg-warning text-dark">
+
+Interview Scheduled
+
+</span>
+
+{% elif application.status == "interview_completed" %}
+
+<span class="badge bg-dark">
+
+Interview Completed
+
+</span>
+
+{% elif application.status == "offer_released" %}
+
+<span class="badge bg-success">
+
+Offer Released
+
+</span>
+
+{% elif application.status == "offer_accepted" %}
+
+<span class="badge bg-success">
+
+Selected
+
+</span>
+
+{% elif application.status == "rejected" %}
+
+<span class="badge bg-danger">
+
+Rejected
+
+</span>
+
+{% else %}
+
+<span class="badge bg-light text-dark">
+
+{{ application.get_status_display }}
+
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if application.student.resume %}
+
+<a
+
+href="{{ application.student.resume.url }}"
+
+target="_blank"
+
+class="btn btn-outline-success btn-sm rounded-pill">
+
+<i class="fas fa-file-pdf me-2"></i>
+
+Resume
+
+</a>
+
+{% else %}
+
+<span class="text-muted">
+
+Not Uploaded
+
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+<a
+
+href="{% url 'review_application' application.id %}"
+
+class="btn btn-primary btn-sm rounded-pill">
+
+Review
+
+</a>
+
+                            <a href="{% url 'schedule_interview' application.id %}"
+   class="btn btn-success">
+
+    <i class="fas fa-calendar-alt me-1"></i>
+
+    Schedule Interview
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="6">
+
+<div class="text-center py-5">
+
+<i class="fas fa-users fa-4x text-muted mb-3"></i>
+
+<h4>
+
+No Applicants Found
+
+</h4>
+
+<p class="text-muted mb-0">
+
+No students have applied for your placements yet.
+
+</p>
+
+</div>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

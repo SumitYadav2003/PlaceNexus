@@ -1,0 +1,646 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-10">
+
+            <!-- Profile Header -->
+
+            <div class="card shadow-lg border-0 rounded-4 mb-4">
+
+                <div class="card-body p-5 text-center">
+
+                    {% if profile.profile_photo %}
+
+                        <img src="{{ profile.profile_photo.url }}"
+                             class="rounded-circle shadow mb-3"
+                             width="170"
+                             height="170"
+                             style="object-fit:cover;">
+
+                    {% else %}
+
+                        <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center shadow mb-3"
+                             style="width:170px;height:170px;">
+
+                            <i class="fas fa-user fa-5x text-primary"></i>
+
+                        </div>
+
+                    {% endif %}
+
+                    <h2 class="fw-bold">
+
+                        {{ profile.full_name|default:request.user.username }}
+
+                    </h2>
+
+{% if profile.role == "student" %}
+
+<div class="badge bg-primary mb-3">
+    Student
+</div>
+
+{% elif profile.role == "coordinator" %}
+
+<div class="badge bg-success mb-3">
+    Placement Coordinator
+</div>
+
+{% elif profile.role == "employer" %}
+
+<div class="badge bg-warning text-dark mb-3">
+    Employer
+</div>
+
+{% endif %}
+                    <p class="text-muted">
+
+                        {{ profile.branch }}
+
+                        {% if profile.college %}
+
+                            • {{ profile.college }}
+
+                        {% endif %}
+
+                    </p>
+
+                    <div class="progress mx-auto mb-3"
+                         style="height:20px;max-width:450px;">
+
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             style="width:{{ completion_percentage }}%;">
+
+                            {{ completion_percentage }}%
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-muted">
+
+                        Profile Completion
+
+                    </p>
+
+{% if is_own_profile %}
+
+<a href="{% url 'edit_profile' %}"
+   class="btn btn-primary rounded-pill px-4">
+
+    <i class="fas fa-edit me-2"></i>
+
+    Edit Profile
+
+</a>
+<a
+href="{% url 'deactivate_account' %}"
+class="btn btn-outline-warning">
+
+<i class="fas fa-pause-circle me-2"></i>
+
+Temporarily Deactivate
+
+</a>
+
+<a
+href="{% url 'permanent_deactivate_account' %}"
+class="btn btn-outline-danger ms-2">
+
+<i class="fas fa-user-slash me-2"></i>
+
+Permanently Deactivate
+
+</a>
+
+{% endif %}
+
+                </div>
+
+            </div>
+
+            {% if profile.role == "student" %}
+
+            <!-- About -->
+
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">
+
+                        📖 About Me
+
+                    </h4>
+
+                    <p>
+
+                        {{ profile.bio|default:"No bio added yet." }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Skills -->
+
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-3">
+
+                        🛠 Skills
+
+                    </h4>
+
+                    <p>
+
+                        {{ profile.skills|linebreaks }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-4">
+
+                    <div class="card shadow-sm border-0 rounded-4 h-100">
+
+                        <div class="card-body">
+
+                            <h4 class="fw-bold">
+
+                                🚀 Projects
+
+                            </h4>
+
+                            {{ profile.projects|linebreaks }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+                    <div class="card shadow-sm border-0 rounded-4 h-100">
+
+                        <div class="card-body">
+
+                            <h4 class="fw-bold">
+
+                                📜 Certificates
+
+                            </h4>
+
+                            {{ profile.certificates|linebreaks }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+                    <div class="card shadow-sm border-0 rounded-4 h-100">
+
+                        <div class="card-body">
+
+                            <h4 class="fw-bold">
+
+                                🏆 Achievements
+
+                            </h4>
+
+                            {{ profile.achievements|linebreaks }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 mb-4">
+
+                    <div class="card shadow-sm border-0 rounded-4 h-100">
+
+                        <div class="card-body">
+
+                            <h4 class="fw-bold">
+
+                                ❤️ Interests
+
+                            </h4>
+
+                            {{ profile.interests|linebreaks }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Social Links -->
+
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-4">
+
+                        🌐 Professional Links
+
+                    </h4>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <strong>GitHub</strong>
+
+                            <br>
+
+                            {% if profile.github %}
+
+                                <a href="{{ profile.github }}"
+                                   target="_blank">
+
+                                    {{ profile.github }}
+
+                                </a>
+
+                            {% else %}
+
+                                Not Added
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <strong>LinkedIn</strong>
+
+                            <br>
+
+                            {% if profile.linkedin %}
+
+                                <a href="{{ profile.linkedin }}"
+                                   target="_blank">
+
+                                    {{ profile.linkedin }}
+
+                                </a>
+
+                            {% else %}
+
+                                Not Added
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Preferences -->
+
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-4">
+
+                        🎯 Placement Preferences
+
+                    </h4>
+
+                    <div class="row text-center">
+
+                        <div class="col-md-4">
+
+                            <h6>Preferred Role</h6>
+
+                            <p>{{ profile.preferred_role|default:"-" }}</p>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <h6>Preferred Company</h6>
+
+                            <p>{{ profile.preferred_company|default:"-" }}</p>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <h6>Preferred Location</h6>
+
+                            <p>{{ profile.preferred_location|default:"-" }}</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Resume -->
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h4 class="fw-bold mb-3">
+
+                        📄 Resume
+
+                    </h4>
+
+                    {% if profile.resume %}
+
+                        <a href="{{ profile.resume.url }}"
+                           target="_blank"
+                           class="btn btn-success rounded-pill">
+
+                            <i class="fas fa-download me-2"></i>
+
+                            View Resume
+
+                        </a>
+
+                    {% else %}
+
+                        <p>No resume uploaded.</p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endif %}
+
+{% if profile.role == "coordinator" %}
+
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="card-body">
+
+        <h3 class="fw-bold mb-4">
+
+            👨‍🏫 Coordinator Information
+
+        </h3>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    Department
+                </h6>
+
+                <p class="fw-semibold">
+
+                    {{ profile.department|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    Designation
+                </h6>
+
+                <p class="fw-semibold">
+
+                    {{ profile.designation|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    Experience
+                </h6>
+
+                <p class="fw-semibold">
+
+                    {{ profile.experience }} Years
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    Office Email
+                </h6>
+
+                <p class="fw-semibold">
+
+                    {{ profile.office_email|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    Phone
+                </h6>
+
+                <p class="fw-semibold">
+
+                    {{ profile.phone|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 rounded-4">
+
+    <div class="card-body">
+
+        <h3 class="fw-bold mb-3">
+
+            📝 About
+
+        </h3>
+
+        <p>
+
+            {{ profile.bio|default:"No information added yet." }}
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% if profile.role == "employer" %}
+
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="card-body">
+
+        <h3 class="fw-bold mb-4">
+
+            🏢 Company Information
+
+        </h3>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    Company Name
+                </h6>
+
+                <p class="fw-semibold">
+
+                    {{ profile.company_name|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    HR Designation
+                </h6>
+
+                <p class="fw-semibold">
+
+                    {{ profile.hr_designation|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    Company Website
+                </h6>
+
+                {% if profile.company_website %}
+
+                    <a href="{{ profile.company_website }}" target="_blank">
+
+                        {{ profile.company_website }}
+
+                    </a>
+
+                {% else %}
+
+                    Not Added
+
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <h6 class="text-muted">
+                    Phone
+                </h6>
+
+                <p class="fw-semibold">
+
+                    {{ profile.phone|default:"Not Added" }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="card-body">
+
+        <h3 class="fw-bold mb-3">
+
+            📍 Company Address
+
+        </h3>
+
+        <p>
+
+            {{ profile.company_address|default:"Not Added" }}
+
+        </p>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 rounded-4">
+
+    <div class="card-body">
+
+        <h3 class="fw-bold mb-3">
+
+            📄 Company Description
+
+        </h3>
+
+        <p>
+
+            {{ profile.company_description|default:"No description added yet." }}
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

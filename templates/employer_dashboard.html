@@ -1,0 +1,1359 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ================= Hero ================= -->
+
+    <div class="card border-0 shadow-lg rounded-4 mb-5">
+
+        <div class="card-body p-5">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <h1 class="fw-bold mb-3">
+
+                        Welcome Back 👋
+
+                    </h1>
+
+                    <h3 class="text-primary fw-bold mb-3">
+
+                        Employer Dashboard
+
+                    </h3>
+
+                    <p class="text-muted fs-5 mb-0">
+
+                        Manage placement requests,, internships, hiring drives,
+                        company profile and engage with the PlaceNexus
+                        community from one dashboard.
+
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-center">
+
+                    <i class="fas fa-building fa-7x text-primary"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- ================= Executive Summary ================= -->
+
+<div class="row mb-5">
+
+<div class="col-lg-9">
+
+<div class="card border-0 shadow rounded-4">
+
+<div class="card-body p-4">
+
+<div class="row text-center">
+
+<div class="col">
+
+<h3 class="fw-bold text-primary">
+
+{{ request_count }}
+
+</h3>
+
+<small class="text-muted">
+
+Requests
+
+</small>
+
+</div>
+
+<div class="col">
+
+<h3 class="fw-bold text-success">
+
+{{ published_count }}
+
+</h3>
+
+<small class="text-muted">
+
+Published
+
+</small>
+
+</div>
+
+<div class="col">
+
+<h3 class="fw-bold text-warning">
+
+{{ active_placements }}
+
+</h3>
+
+<small class="text-muted">
+
+Active Jobs
+
+</small>
+
+</div>
+
+<div class="col">
+
+<h3 class="fw-bold text-info">
+
+{{ total_applicants }}
+
+</h3>
+
+<small class="text-muted">
+
+Applicants
+
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow rounded-4 bg-primary text-white h-100">
+
+<div class="card-body d-flex flex-column justify-content-center">
+
+<h5 class="fw-bold">
+
+Hiring Status
+
+</h5>
+
+<h2 class="mt-3">
+
+Active
+
+</h2>
+
+<small>
+
+Recruitment pipeline running normally.
+
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= Statistics ================= -->
+
+<div class="row g-4 mb-5">
+
+    <div class="col-lg-2 col-md-4">
+
+        <div class="card stat-card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-file-alt fa-2x text-primary mb-3"></i>
+
+                <h6 class="text-uppercase">
+
+                    Requests
+
+                </h6>
+
+                <h2 class="fw-bold">
+
+                    {{ request_count }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-2 col-md-4">
+
+        <div class="card stat-card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-circle-check fa-2x mb-3"></i>
+
+                <h6 class="text-uppercase">
+
+                    Published
+
+                </h6>
+
+                <h2 class="fw-bold">
+
+                    {{ published_count }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-2 col-md-4">
+
+        <div class="card stat-card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-clock fa-2x mb-3"></i>
+
+                <h6 class="text-uppercase">
+
+                    Pending
+
+                </h6>
+
+                <h2 class="fw-bold">
+
+                    {{ pending_requests }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-2 col-md-4">
+
+        <div class="card stat-card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-pen-to-square fa-2x mb-3"></i>
+
+                <h6 class="text-uppercase">
+
+                    Revisions
+
+                </h6>
+
+                <h2 class="fw-bold">
+
+                    {{ needs_changes_count }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-2 col-md-4">
+
+        <div class="card stat-card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-briefcase fa-2x mb-3"></i>
+
+                <h6 class="text-uppercase">
+
+                    Active Jobs
+
+                </h6>
+
+                <h2 class="fw-bold">
+
+                    {{ active_placements }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-2 col-md-4">
+
+        <div class="card stat-card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-users fa-2x mb-3"></i>
+
+                <h6 class="text-uppercase">
+
+                    Applicants
+
+                </h6>
+
+                <h2 class="fw-bold">
+
+                    {{ total_applicants }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-5">
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-star text-primary fa-3x mb-3"></i>
+
+                <h5>
+
+                    Shortlisted
+
+                </h5>
+
+                <h1 class="fw-bold">
+
+                    {{ shortlisted_count }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-calendar-check text-warning fa-3x mb-3"></i>
+
+                <h5>
+
+                    Interviews
+
+                </h5>
+
+                <h1 class="fw-bold">
+
+                    {{ interview_count }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card border-0 shadow rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="fas fa-award text-success fa-3x mb-3"></i>
+
+                <h5>
+
+                    Selected
+
+                </h5>
+
+                <h1 class="fw-bold">
+
+                    {{ selected_count }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- ================= Quick Actions ================= -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div>
+
+<h2 class="fw-bold mb-1">
+
+Quick Actions
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Everything you need to manage recruitment.
+
+</p>
+
+</div>
+
+<span class="badge bg-primary px-3 py-2 rounded-pill">
+
+Employer Panel
+
+</span>
+
+</div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-5 align-items-stretch">
+
+                <div class="col-lg-4">
+
+            <a href="{% url 'create_request' %}"
+
+               class="text-decoration-none">
+
+                <div class="card action-card border-0 shadow rounded-4 h-100 d-flex">
+
+                    <div class="card-body text-center p-5 d-flex flex-column justify-content-center">
+
+                        <i class="fas fa-plus-circle fa-4x text-primary mb-4"></i>
+
+                        <h4 class="fw-bold">
+
+                            Create Placement Request
+
+                        </h4>
+
+                        <p class="text-muted">
+
+                            Submit a placement request for coordinator approval.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <a href="{% url 'community_feed' %}"
+
+               class="text-decoration-none">
+
+                <div class="card action-card border-0 shadow rounded-4 h-100 d-flex">
+
+                    <div class="card-body text-center p-5 d-flex flex-column justify-content-center">
+
+                        <i class="fas fa-users fa-4x text-success mb-4"></i>
+
+                        <h4 class="fw-bold">
+
+                            Community
+
+                        </h4>
+
+                        <p class="text-muted">
+
+                            Connect with students and coordinators.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-4">
+
+<a href="{% url 'employer_candidates' %}"
+class="text-decoration-none">
+
+<div class="card action-card border-0 shadow rounded-4 h-100 d-flex">
+
+<div class="card-body text-center p-5 d-flex flex-column justify-content-center">
+
+<i class="fas fa-user-graduate fa-4x text-success mb-4"></i>
+
+<h4 class="fw-bold">
+
+View Applicants
+
+</h4>
+
+<p class="text-muted">
+
+Review all students who have applied to your published placements.
+
+</p>
+
+</div>
+
+</div>
+
+</a>
+
+        </div>
+
+                <div class="col-lg-4">
+
+            <a href="{% url 'my_requests' %}"
+               class="text-decoration-none">
+
+                <div class="card action-card border-0 shadow rounded-4 h-100 d-flex">
+
+                    <div class="card-body text-center p-5 d-flex flex-column justify-content-center">
+
+                        <i class="fas fa-list fa-4x text-info mb-4"></i>
+
+                        <h4 class="fw-bold">
+
+                            My Requests
+
+                        </h4>
+
+                        <p class="text-muted">
+
+                            Track pending, approved and published placement requests.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <a href="{% url 'profile' %}"
+               class="text-decoration-none">
+
+                <div class="card action-card border-0 shadow rounded-4 h-100 d-flex">
+
+                    <div class="card-body text-center p-5 d-flex flex-column justify-content-center">
+
+                        <i class="fas fa-user-tie fa-4x text-dark mb-4"></i>
+
+                        <h4 class="fw-bold">
+
+                            Company Profile
+
+                        </h4>
+
+                        <p class="text-muted">
+
+                            Manage your company and HR profile.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <a href="{% url 'employer_analytics' %}"
+               class="text-decoration-none">
+
+                <div class="card action-card border-0 shadow rounded-4 h-100 d-flex">
+
+                    <div class="card-body text-center p-5 d-flex flex-column justify-content-center">
+
+                        <i class="fas fa-chart-line fa-4x text-primary mb-4"></i>
+
+<h4 class="fw-bold">
+
+Placement Analytics
+
+</h4>
+
+<p class="text-muted">
+
+Review placement performance, hiring metrics and applicant insights.
+
+</p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- ================= Hiring Analytics ================= -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div>
+
+<h2 class="fw-bold mb-1">
+
+Hiring Analytics
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Real-time recruitment insights.
+
+</p>
+
+</div>
+
+<i class="fas fa-chart-line fa-2x text-primary"></i>
+
+</div>
+<div class="row g-4 mb-5">
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow rounded-4 h-100">
+
+<div class="card-body text-center">
+
+<i class="fas fa-users fa-3x text-primary mb-3"></i>
+
+<h3 class="fw-bold">
+
+{{ total_applicants }}
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Total Applicants
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow rounded-4 h-100">
+
+<div class="card-body text-center">
+
+<i class="fas fa-star fa-3x text-warning mb-3"></i>
+
+<h3 class="fw-bold">
+
+{{ shortlisted_count }}
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Shortlisted
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow rounded-4 h-100">
+
+<div class="card-body text-center">
+
+<i class="fas fa-calendar-check fa-3x text-info mb-3"></i>
+
+<h3 class="fw-bold">
+
+{{ interview_count }}
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Interviews Scheduled
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card border-0 shadow rounded-4 h-100">
+
+<div class="card-body text-center">
+
+<i class="fas fa-award fa-3x text-success mb-3"></i>
+
+<h3 class="fw-bold">
+
+{{ selected_count }}
+
+</h3>
+
+<p class="text-muted mb-0">
+
+Selected Candidates
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card border-0 shadow rounded-4 mb-5">
+
+<div class="card-body">
+
+<h4 class="fw-bold mb-4">
+
+Recruitment Overview
+
+</h4>
+
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="text-center">
+
+<h2 class="fw-bold text-primary">
+
+{{ active_placements }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Active Placements
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="text-center">
+
+<h2 class="fw-bold text-success">
+
+{{ published_count }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Published Jobs
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="text-center">
+
+<h2 class="fw-bold text-warning">
+
+{{ pending_requests }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Pending Requests
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="text-center">
+
+<h2 class="fw-bold text-danger">
+
+{{ rejected_count }}
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Rejected Requests
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-4">
+
+<div class="progress" style="height:18px;">
+
+{% if total_applicants > 0 %}
+
+<div class="progress-bar bg-success"
+
+style="width:100%;">
+
+Hiring Pipeline Active
+
+</div>
+
+{% else %}
+
+<div class="progress-bar"
+
+style="width:15%;">
+
+Waiting for Applicants
+
+</div>
+
+{% endif %}
+
+</div>
+
+<p class="small text-muted mt-3 mb-0">
+
+Monitor your hiring pipeline, applicant activity and placement performance from one place.
+
+</p>
+
+</div>
+
+</div>
+
+    <!-- ================= Community ================= -->
+
+    <div class="mt-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+<div>
+
+<h2 class="fw-bold mb-1">
+
+<i class="fas fa-users text-primary me-2"></i>
+
+Latest Community Posts
+
+</h2>
+
+<p class="text-muted mb-0">
+
+Stay connected with students and placement coordinators.
+
+</p>
+
+</div>
+
+            <a href="{% url 'community_feed' %}"
+               class="btn btn-primary rounded-pill">
+
+                View Community
+
+            </a>
+
+        </div>
+
+                <!-- ================= Student Posts ================= -->
+
+        <h4 class="fw-bold mt-4 mb-3">
+
+            🎓 Student Posts
+
+        </h4>
+
+        <div class="row">
+
+            {% for post in student_posts %}
+
+                <div class="col-lg-4 mb-4">
+
+                    {% include "applications/community/_dashboard_post_card.html" %}
+
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+
+                    <div class="alert alert-light border rounded-4">
+
+                        No student posts available.
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- ================= Coordinator Posts ================= -->
+
+        <h4 class="fw-bold mt-4 mb-3">
+
+            👨‍🏫 Coordinator Posts
+
+        </h4>
+
+        <div class="row">
+
+            {% for post in coordinator_posts %}
+
+                <div class="col-lg-4 mb-4">
+
+                    {% include "applications/community/_dashboard_post_card.html" %}
+
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+
+                    <div class="alert alert-light border rounded-4">
+
+                        No coordinator posts available.
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- ================= Employer Posts ================= -->
+
+        <h4 class="fw-bold mt-4 mb-3">
+
+            🏢 Employer Posts
+
+        </h4>
+
+        <div class="row">
+
+            {% for post in employer_posts %}
+
+                <div class="col-lg-4 mb-4">
+
+                    {% include "applications/community/_dashboard_post_card.html" %}
+
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+
+                    <div class="alert alert-light border rounded-4">
+
+                        No employer posts available.
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    </div>
+
+<style>
+
+body{
+
+    background:#f5f7fb;
+
+}
+
+.stat-card{
+
+    border:0;
+
+    border-radius:22px;
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:white;
+
+    transition:.35s;
+
+    overflow:hidden;
+
+}
+
+.stat-card h6{
+
+    color:rgba(255,255,255,.85)!important;
+
+}
+
+.stat-card h2{
+
+    color:white!important;
+
+    font-size:2rem;
+
+}
+
+.stat-card i{
+
+    color:white!important;
+
+    opacity:.9;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 1.2rem 2.4rem rgba(37,99,235,.35)!important;
+
+}
+
+.action-card{
+
+overflow:hidden;
+
+position:relative;
+
+height:100%;
+
+min-height:320px;
+
+display:flex;
+
+}
+.action-card .card-body{
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+height:100%;
+
+}
+.action-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 1rem 2rem rgba(0,0,0,.18)!important;
+
+}
+
+.action-card i{
+
+    transition:.3s;
+
+}
+
+.action-card:hover i{
+
+    transform:scale(1.12);
+
+}
+
+.dashboard-post-card{
+
+    transition:.3s;
+
+}
+
+.dashboard-post-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 .8rem 2rem rgba(0,0,0,.12)!important;
+
+}
+
+.dashboard-post-image{
+
+    height:190px;
+
+    width:100%;
+
+    object-fit:cover;
+
+    border-top-left-radius:18px;
+
+    border-top-right-radius:18px;
+
+}
+
+.dashboard-avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.dashboard-avatar-placeholder{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    background:#0d6efd;
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:bold;
+
+}
+
+.alert{
+
+    border-radius:16px;
+
+}
+
+@media(max-width:991px){
+
+    .card-body{
+
+        text-align:center;
+
+    }
+
+    h1{
+
+        font-size:2rem;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .dashboard-post-image{
+
+        height:220px;
+
+    }
+
+}
+
+
+.hero-icon{
+
+    opacity:.9;
+
+}
+
+.btn{
+
+    border-radius:50px;
+
+}
+
+.btn-primary{
+
+    padding:.55rem 1.4rem;
+
+}
+
+.btn-outline-primary{
+
+    padding:.55rem 1.4rem;
+
+}
+
+.card{
+
+    overflow:hidden;
+
+}
+
+.container{
+
+    animation:fadeIn .45s ease-in-out;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+.stat-card{
+
+position:relative;
+
+}
+
+.stat-card::after{
+
+content:"";
+
+position:absolute;
+
+right:-30px;
+
+bottom:-30px;
+
+width:110px;
+
+height:110px;
+
+background:rgba(255,255,255,.10);
+
+border-radius:50%;
+
+}
+
+.action-card{
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.action-card::before{
+
+content:"";
+
+position:absolute;
+
+left:0;
+
+top:0;
+
+width:4px;
+
+height:100%;
+
+background:#2563eb;
+
+opacity:0;
+
+transition:.3s;
+
+}
+
+.action-card:hover::before{
+
+opacity:1;
+
+}
+
+.card{
+
+transition:.25s;
+
+height:100%;
+
+}
+.card:hover{
+
+transform:translateY(-5px);
+
+}
+
+</style>
+
+{% endblock %}
