@@ -1,0 +1,42 @@
+# Local testing only: runs PlaceNexus + a PostgreSQL database in containers.
+# The credentials below are throwaway values for your own machine.
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: placenexus
+      POSTGRES_USER: placenexus
+      POSTGRES_PASSWORD: placenexus
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U placenexus -d placenexus"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SECRET_KEY: local-docker-test-key-not-a-real-secret
+      # "False" = production-like mode. Set to "True" only if you want to see
+      # uploaded images locally (they are served by Django only in debug mode).
+      DEBUG: "False"
+      # We test over plain http://localhost, so turn off HTTPS-only cookies
+      HTTPS_ONLY: "False"
+      ALLOWED_HOSTS: localhost,127.0.0.1
+      DATABASE_URL: postgres://placenexus:placenexus@db:5432/placenexus
+      # No BREVO_API_KEY here, so emails (including login OTP codes) are
+      # printed in the logs:  docker compose logs web
+    volumes:
+      - media:/app/media
+
+volumes:
+  pgdata:
+  media:

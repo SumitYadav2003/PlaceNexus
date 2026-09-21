@@ -1,0 +1,39 @@
+# Version control / CI
+.git
+.gitignore
+.github
+
+# Local environments and secrets - never copy these into the image
+venv
+.venv
+.env
+.env.*
+
+# Python junk
+__pycache__
+*.pyc
+*.pyo
+
+# Local data and generated files
+media
+staticfiles
+*.sqlite3
+
+# Docs and reports (not needed to run the app)
+docs
+screenshots
+reports
+report.txt
+interim-report.docx
+README.md
+
+# Docker files themselves
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Editor / OS files
+.vscode
+.DS_Store
+Thumbs.db
+Desktop.ini
