@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: placenexus
+          POSTGRES_USER: placenexus
+          POSTGRES_PASSWORD: placenexus
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U placenexus -d placenexus"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      # Throwaway values used only inside this CI run
+      SECRET_KEY: ci-only-not-a-real-secret
+      DATABASE_URL: postgres://placenexus:placenexus@localhost:5432/placenexus
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Django system check
+        run: python manage.py check
+
+      - name: Check for missing migrations
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Collect static files
+        run: python manage.py collectstatic --noinput
+
+      - name: Run tests
+        run: python manage.py test
+
+  docker-build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v7
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build the Docker image (not pushed anywhere)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          tags: placenexus:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -39,3 +39,6 @@ htmlcov/
 interim-report.docx
 report.txt
 reports/
+
+
+staticfiles/
