@@ -14,8 +14,32 @@ Instead of handling placements, applications, interviews, candidate management, 
 
 ---
 
+## Live Demo
+
+**Live site:** https://placenexus.onrender.com
+
+> The site runs on a free hosting plan that goes to sleep when nobody is using it. If it has been idle, the first page can take up to about a minute to load. After that it is fast.
+
+You can try it without registering, using the shared demo accounts:
+
+| Role | Username | Password |
+|---|---|---|
+| Student | `demo_student` | `Sumit@996797` |
+| Placement Coordinator | `demo_coordinator` | `Sumit@996797` |
+| Employer | `demo_employer` | `Sumit@996797` |
+
+Notes:
+
+- The demo accounts skip the emailed verification code so that visitors can log in straight away. Every other account still needs the 6-digit code that is emailed at login (see [Demo Mode](#demo-mode)).
+- All companies, people, placements and posts in the demo are invented sample data.
+- The demo accounts are shared, so other visitors can see and change what you do, and the data may be reset at any time.
+- Please do not upload personal documents or real personal information.
+
+---
+
 ## Table of Contents
 
+- [Live Demo](#live-demo)
 - [About the Project](#about-the-project)
 - [Project Aim](#project-aim)
 - [Main User Roles](#main-user-roles)
@@ -29,6 +53,7 @@ Instead of handling placements, applications, interviews, candidate management, 
 - [Installation and Setup](#installation-and-setup)
 - [Environment Variables](#environment-variables)
 - [Running the Application](#running-the-application)
+- [Deployment](#deployment)
 - [Supporting Modules](#supporting-modules)
 - [Testing](#testing)
 - [Current Limitations](#current-limitations)
@@ -587,6 +612,16 @@ PlaceNexus was developed using the following technologies.
 - CSV/data export
 - Environment variables using `python-dotenv`
 
+## Deployment and Infrastructure
+
+- Docker (`python:3.12-slim` image, running as a non-root user) and Docker Compose for local testing
+- Gunicorn application server, with WhiteNoise serving static files
+- Render (web service on the free plan, Frankfurt region)
+- Neon (hosted PostgreSQL)
+- AWS S3 (private bucket, signed URLs) with an IAM user limited to that one bucket, for uploaded files
+- Brevo transactional email API (through `django-anymail`) for OTP and notification emails
+- GitHub Actions for continuous integration
+
 ---
 
 # System Architecture
@@ -639,7 +674,7 @@ A simplified structure of the project is shown below:
 PlaceNexus/
 │
 ├── accounts/
-│   └── Authentication and account-related functionality
+│   └── Authentication, account functionality and the seed_demo command
 │
 ├── ai_module/
 │   └── Career preparation/support functionality
@@ -667,7 +702,12 @@ PlaceNexus/
 │
 ├── manage.py
 ├── requirements.txt
-├── render.yaml
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── .gitignore
 └── README.md
 ```
@@ -738,7 +778,7 @@ The following instructions can be used to run PlaceNexus locally.
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/PlaceNexus.git
+git clone https://github.com/SumitYadav2003/PlaceNexus.git
 ```
 
 Move into the project directory:
@@ -799,6 +839,7 @@ Example:
 
 ```env
 SECRET_KEY=your_django_secret_key
+DEBUG=True
 
 DB_NAME=placement_db
 DB_USER=postgres
@@ -810,7 +851,11 @@ EMAIL_HOST_USER=your_email@example.com
 EMAIL_HOST_PASSWORD=your_email_app_password
 ```
 
+`DEBUG=True` is for local development only. Debug is off by default, and without it uploaded images and the admin styling are not served by the local development server. If the two email variables are left out, emails (including login codes) are printed in the terminal instead of being sent.
+
 > Never commit the `.env` file to GitHub.
+
+Production settings are described in [Deployment](#deployment).
 
 The `.gitignore` file is configured to prevent sensitive environment information from being committed.
 
@@ -877,6 +922,65 @@ http://127.0.0.1:8000/
 ```
 
 Open the address in a web browser.
+
+---
+
+# Deployment
+
+The public demo runs at https://placenexus.onrender.com.
+
+## Running with Docker locally
+
+With Docker Desktop running:
+
+```bash
+docker compose up --build
+```
+
+Then open http://localhost:8000. This starts the application and its own PostgreSQL database in containers. No email service is configured in this setup, so login codes are printed in the application logs (`docker compose logs web`).
+
+## Production setup
+
+- **Hosting:** a Docker web service on Render (free plan). The container applies database migrations when it starts and then runs Gunicorn.
+- **Database:** PostgreSQL on Neon, connected through the `DATABASE_URL` environment variable. Neon was chosen because Render's free PostgreSQL databases expire after 30 days.
+- **File uploads:** a private AWS S3 bucket. Files are served through signed links that expire after one hour, because resumes are personal documents and Render's free filesystem is wiped on every redeploy.
+- **Email:** sent through Brevo's HTTP API, because Render's free web services block outbound SMTP ports.
+- **Continuous integration:** every push to `main` runs the Django system check, a check for missing migrations, `collectstatic`, the test suite against a PostgreSQL 16 service, and a build of the Docker image.
+
+### Production environment variables
+
+| Variable | Purpose |
+|---|---|
+| `SECRET_KEY` | Django secret key (use a different value from local development) |
+| `DEBUG` | Set to `False` in production (off if not set) |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `BREVO_API_KEY` | Enables sending email through Brevo |
+| `DEFAULT_FROM_EMAIL` | Sender address, which must be verified in Brevo |
+| `AWS_STORAGE_BUCKET_NAME`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_S3_REGION_NAME` | Private S3 bucket for uploads |
+| `DEMO_ACCOUNTS` | Comma-separated demo usernames that skip the OTP (empty means the feature is off) |
+
+## Demo Mode
+
+Login normally sends a 6-digit code to the user's email. So that visitors can explore the site without an account, three demo accounts can skip that step:
+
+- The accounts are listed in the `DEMO_ACCOUNTS` environment variable. It is empty by default, so the feature is off unless it is set.
+- Staff and superuser accounts can never skip the code, even if they are listed.
+- The demo accounts have no email address, so the application never tries to email them.
+- Demo accounts cannot be permanently deactivated.
+- All demo accounts are shared and publicly documented, so they hold only invented sample data.
+
+To create or reset the demo accounts and their sample data:
+
+```bash
+# PowerShell
+$env:DEMO_PASSWORD = "choose-a-password"
+python manage.py seed_demo
+
+# macOS / Linux
+DEMO_PASSWORD="choose-a-password" python manage.py seed_demo
+```
+
+Running the command again deletes the three demo accounts (and everything they own) and rebuilds them.
 
 ---
 
@@ -989,6 +1093,22 @@ The system was tested across major application workflows, including:
 
 Testing was used throughout development to identify and resolve workflow and access-control issues.
 
+## Automated tests
+
+The repository also contains a Django test suite (22 tests at the time of writing) covering:
+
+- public pages and access control
+- the login flow with emailed one-time codes
+- the demo accounts and the `seed_demo` command
+
+Run it with:
+
+```bash
+python manage.py test
+```
+
+The suite runs automatically in GitHub Actions on every push. The other workflows listed above were tested manually.
+
 ---
 
 # Current Limitations
@@ -1002,7 +1122,9 @@ Current limitations include:
 - No advanced automated placement-matching system
 - No automated candidate-recommendation engine
 - Limited formal external user evaluation
-- Additional automated testing could be introduced
+- Automated tests cover authentication, access control and the demo accounts only; other workflows were tested manually
+- The public demo runs on free hosting, so it can be slow to wake up and its data may be reset
+- Emails are sent from a personal address without a custom domain, so they may be filtered as spam
 
 These limitations provide opportunities for future development.
 
