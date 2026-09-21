@@ -227,6 +227,7 @@ if AWS_STORAGE_BUCKET_NAME:
     # Must match the region your bucket was created in
     AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-west-2')
     AWS_S3_SIGNATURE_VERSION = 's3v4'
+    AWS_S3_ADDRESSING_STYLE = 'virtual'
     AWS_QUERYSTRING_AUTH = True        # private bucket, signed URLs
     AWS_QUERYSTRING_EXPIRE = 3600      # links valid for 1 hour
     AWS_S3_FILE_OVERWRITE = False      # never overwrite a file with the same name
