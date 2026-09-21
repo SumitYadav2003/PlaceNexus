@@ -227,6 +227,9 @@ if AWS_STORAGE_BUCKET_NAME:
     # Must match the region your bucket was created in
     AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-west-2')
     AWS_S3_SIGNATURE_VERSION = 's3v4'
+    # Sign links for the bucket's regional address (bucket.s3.<region>.amazonaws.com).
+    # Without this, signed links use the global address, S3 redirects them, and the
+    # signature then fails with SignatureDoesNotMatch.
     AWS_S3_ADDRESSING_STYLE = 'virtual'
     AWS_QUERYSTRING_AUTH = True        # private bucket, signed URLs
     AWS_QUERYSTRING_EXPIRE = 3600      # links valid for 1 hour
@@ -280,6 +283,16 @@ else:
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL') or os.getenv('EMAIL_HOST_USER') or 'noreply@localhost'
 
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+# ==========================================
+# DEMO ACCOUNTS (skip the emailed OTP)
+# ==========================================
+# Comma-separated usernames, e.g.
+#   DEMO_ACCOUNTS=demo_student,demo_coordinator,demo_employer
+# Empty (the default) means the feature is off and every account needs the
+# emailed OTP. Staff and superusers can never be demo accounts.
+
+DEMO_ACCOUNTS = [name.lower() for name in env_list('DEMO_ACCOUNTS')]
 
 # ==========================================
 # LOGGING (so errors show up in Render's log viewer)

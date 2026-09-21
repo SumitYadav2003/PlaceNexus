@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.mail import send_mail
 from random import randint
 import time
@@ -60,3 +61,16 @@ def send_login_otp(user,request):
 )
 
     email.send()
+
+
+def is_demo_account(user):
+    """
+    Demo accounts (listed in the DEMO_ACCOUNTS setting) skip the emailed OTP,
+    so visitors can try the site without registering.
+    Staff and superusers are never treated as demo accounts.
+    """
+
+    if user.is_staff or user.is_superuser:
+        return False
+
+    return user.username.lower() in settings.DEMO_ACCOUNTS

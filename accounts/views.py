@@ -17,7 +17,7 @@ from applications.models import SavedPlacement,SupportTicket
 from django.contrib.messages import get_messages
 from applications.models import CommunityPost
 import time 
-from .utils import send_login_otp
+from .utils import send_login_otp, is_demo_account
 from applications.models import (
     CommunityPost,
     Application,
@@ -139,6 +139,19 @@ def login_view(request):
 
     )
 
+            # Demo accounts (see DEMO_ACCOUNTS setting) skip the emailed OTP
+            if is_demo_account(user):
+
+                login(request, user)
+
+                if profile.role == "student":
+                    return redirect("student_dashboard")
+
+                if profile.role == "coordinator":
+                    return redirect("coordinator_dashboard")
+
+                return redirect("employer_dashboard")
+
             send_login_otp(
 
                 user,
@@ -204,6 +217,15 @@ def deactivate_account_view(request):
 
 @login_required
 def permanent_deactivate_account_view(request):
+
+    if is_demo_account(request.user):
+
+        messages.error(
+            request,
+            "Demo accounts cannot be permanently deactivated."
+        )
+
+        return redirect("home")
 
     profile = Profile.objects.get(
         user=request.user
